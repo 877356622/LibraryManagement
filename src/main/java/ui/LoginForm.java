@@ -4,6 +4,8 @@
 
 package ui;
 
+import dao.Select;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,10 +22,26 @@ public class LoginForm extends JFrame {
 
     private void button2ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String username=textField1.getText();
+        String password=textField2.getText();
+        if(Select.checkuser(username,password)){
+            System.out.println("登录成功");
+        }else {
+            System.out.println("用户名或密码错误");
+            new LoginErrorForm();
+        }
     }
 
     private void button1ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String aname=textField1.getText();
+        String apassword=textField2.getText();
+        if(Select.checkadms(aname,apassword)){
+            System.out.println("登录成功");
+        }else {
+            System.out.println("用户名或密码错误");
+            new LoginErrorForm();
+        }
     }
 
     private void button3ActionPerformed(ActionEvent e) {

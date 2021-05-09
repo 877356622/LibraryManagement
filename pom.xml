@@ -7,6 +7,8 @@
     <groupId>guet.edu.cn</groupId>
     <artifactId>LibraryManagement</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+    </dependencies>
 
 
 </project>

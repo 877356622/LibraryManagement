@@ -38,4 +38,56 @@ public class Select {
         }
         return list;
     }
+
+    public static boolean checkuser(String uid,String password){
+        Connection conn=null;
+        String url="jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt=null;
+        String sql="SELECT * FROM users WHERE u_id=?";
+        ResultSet rs=null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn= DriverManager.getConnection(url,"lhh","lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,uid);
+            rs=pstmt.executeQuery();
+            if (rs.next()){
+                if(password.equals(rs.getString("u_id"))){
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean checkadms(String aname,String apassword){
+        Connection conn=null;
+        String url="jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt=null;
+        String sql="SELECT * FROM administrators WHERE a_name=?";
+        ResultSet rs=null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn= DriverManager.getConnection(url,"lhh","lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1,aname);
+            rs=pstmt.executeQuery();
+            if (rs.next()){
+                if(apassword.equals(rs.getString("a_password"))){
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
