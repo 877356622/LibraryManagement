@@ -66,5 +66,37 @@ public class Insert {
         }
         return flag;
     }
+
+    public static boolean Insertbookcategory(String bk_id, String bk_name, String bk_desc) {
+        boolean flag = true;
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO bookcategory VALUES(?,?,?)";
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, bk_id);
+            pstmt.setString(2, bk_name);
+            pstmt.setString(3, bk_desc);
+            pstmt.execute();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            flag = false;
+        } finally {
+            try {
+                pstmt.close();
+                conn.close();
+                return flag;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
 }
 

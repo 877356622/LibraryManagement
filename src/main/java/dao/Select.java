@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Administrators;
+import entity.Bookcategory;
 import entity.Books;
 
 import java.sql.*;
@@ -153,5 +154,41 @@ public class Select {
             }
         }
         return administrators;
+    }
+
+    public static List<Bookcategory> serchbookcategorys(){
+        List<Bookcategory> list=new ArrayList<Bookcategory>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM bookcategory";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Bookcategory bookcategory=new Bookcategory();
+                bookcategory.setBk_id(rs.getString("bk_id"));
+                bookcategory.setBk_name(rs.getString("bk_name"));
+                bookcategory.setBk_desc(rs.getString("bk_desc"));
+                list.add(bookcategory);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
     }
 }

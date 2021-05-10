@@ -4,13 +4,17 @@
 
 package ui;
 
+import dao.Insert;
 import dao.Select;
 import dao.Update;
 import entity.Administrators;
+import entity.Bookcategory;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author 1
@@ -22,6 +26,7 @@ public class admsMainForm extends JFrame {
 
     private void menuItem1ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书类别添加
         panel9.setVisible(false);
         panel2.setVisible(false);
         panel3.setVisible(false);
@@ -67,6 +72,7 @@ public class admsMainForm extends JFrame {
 
     private void menuItem8ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书类别管理
         panel9.setVisible(false);
         panel1.setVisible(false);
         panel3.setVisible(false);
@@ -76,6 +82,16 @@ public class admsMainForm extends JFrame {
         panel7.setVisible(false);
         panel8.setVisible(false);
         panel2.setVisible(true);
+        java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
+        list=Select.serchbookcategorys();
+        bkdata=new Object[list.size()][bkhead.length];
+        for(int i=0;i<list.size();i++){
+            bkdata[i][0]=list.get(i).getBk_id();
+            bkdata[i][1]=list.get(i).getBk_name();
+            bkdata[i][2]=list.get(i).getBk_desc();
+        }
+        DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+        table1.setModel(tableModel1);
     }
 
     private void menuItem9ActionPerformed(ActionEvent e) {
@@ -141,10 +157,31 @@ public class admsMainForm extends JFrame {
 
     private void button1ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书类别添加按钮
+        String bk_id=textField1.getText();
+        String bk_name=textField2.getText();
+        String bk_desc=textField9.getText();
+        if(bk_id.isEmpty()){
+            JOptionPane.showMessageDialog(null, "图书类别id不能为空");
+            return;
+        }
+        if(bk_name.isEmpty()){
+            JOptionPane.showMessageDialog(null, "图书类别名称不能为空");
+            return;
+        }
+        if(Insert.Insertbookcategory(bk_id,bk_name,bk_desc)){
+            JOptionPane.showMessageDialog(null, "图书类别添加成功");
+        }else{
+            JOptionPane.showMessageDialog(null, "图书类别添加失败，可能原因为图书id已存在");
+        }
     }
 
     private void button2ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书类别重置按钮
+        textField1.setText("");
+        textField2.setText("");
+        textField9.setText("");
     }
 
     private void button14ActionPerformed(ActionEvent e) {
@@ -153,6 +190,18 @@ public class admsMainForm extends JFrame {
         String a_id=textField28.getText();
         String a_name=textField29.getText();
         String a_password=textField30.getText();
+        if(a_id.isEmpty()){
+            JOptionPane.showMessageDialog(null, "用户id不能为空");
+            return;
+        }
+        if(a_name.isEmpty()){
+            JOptionPane.showMessageDialog(null, "用户名不能为空");
+            return;
+        }
+        if(a_password.isEmpty()){
+            JOptionPane.showMessageDialog(null, "密码不能为空");
+            return;
+        }
         if(Update.updateAdms(a_id,a_name,a_password)){
             JOptionPane.showMessageDialog(null, "修改信息成功");
             admsMainForm admsMainForm=new admsMainForm(a_id);
@@ -1052,5 +1101,9 @@ public class admsMainForm extends JFrame {
     private JLabel label33;
     private JPanel panel9;
     private JLabel label31;
+    private Object[][] bkdata=null;
+    private String bkhead[]={"图书类别编号","图书类别名称","图书类别描述"};
+    private Object[][] bdata=null;
+    private String bhead[]={"图书编号","图书名称","图书类别名称","图书作者","价格","出版社","描述"};
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

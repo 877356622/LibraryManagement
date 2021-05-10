@@ -9,7 +9,6 @@ import dao.Select;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import javax.swing.*;
 
 /**
@@ -81,8 +80,8 @@ public class LoginForm extends JFrame {
         button1 = new JButton();
         button2 = new JButton();
         button3 = new JButton();
-        textField1 = new JTextField();
-        textField2 = new JTextField();
+        textField1 = new JTextField("111111");
+        textField2 = new JTextField("111111");
 
         //======== this ========
         setTitle("\u767b\u5f55");
