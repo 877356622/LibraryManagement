@@ -47,7 +47,8 @@ public class Select {
         return list;
     }
 
-    public static boolean checkuser(String uid, String password) {
+    public static String checkuser(String uid, String password) {
+        String uname = "";
         Connection conn = null;
         String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
         PreparedStatement pstmt = null;
@@ -62,7 +63,8 @@ public class Select {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 if (password.equals(rs.getString("u_id"))) {
-                    return true;
+                    uname = rs.getNString("u_name");
+                    return uname;
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -78,10 +80,11 @@ public class Select {
                 e.printStackTrace();
             }
         }
-        return false;
+        return uname;
     }
 
-    public static boolean checkadms(String aid, String apassword) {
+    public static String checkadms(String aid, String apassword) {
+        String aname = "";
         Connection conn = null;
         String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
         PreparedStatement pstmt = null;
@@ -96,7 +99,8 @@ public class Select {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 if (apassword.equals(rs.getString("a_password"))) {
-                    return true;
+                    aname = rs.getString("a_name");
+                    return aname;
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -112,6 +116,6 @@ public class Select {
                 e.printStackTrace();
             }
         }
-        return false;
+        return aname;
     }
 }

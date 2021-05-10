@@ -22,17 +22,18 @@ public class LoginForm extends JFrame {
 
     private void button2ActionPerformed(ActionEvent e) {
         // TODO add your code here
-        String username = textField1.getText();
+        String uid = textField1.getText();
         String password = textField2.getText();
-        if(username.isEmpty()) {
+        if (uid.isEmpty()) {
             JOptionPane.showMessageDialog(null, "用户名不能为空");
             return;
         }
-        if(password.isEmpty()) {
+        if (password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "密码不能为空");
             return;
         }
-        if (Select.checkuser(username, password)) {
+        String uname = Select.checkuser(uid, password);
+        if (!uname.isEmpty()) {
             System.out.println("登录成功");
         } else {
             JOptionPane.showMessageDialog(null, "用户名或密码错误!");
@@ -42,18 +43,21 @@ public class LoginForm extends JFrame {
 
     private void button1ActionPerformed(ActionEvent e) {
         // TODO add your code here
-        String aname = textField1.getText();
+        String aid = textField1.getText();
         String apassword = textField2.getText();
-        if(aname.isEmpty()) {
+        if (aid.isEmpty()) {
             JOptionPane.showMessageDialog(null, "用户名不能为空");
             return;
         }
-        if(apassword.isEmpty()) {
+        if (apassword.isEmpty()) {
             JOptionPane.showMessageDialog(null, "密码不能为空");
             return;
         }
-        if (Select.checkadms(aname, apassword)) {
+        String aname = Select.checkadms(aid, apassword);
+        if (!aname.isEmpty()) {
             JOptionPane.showMessageDialog(null, "登录成功");
+            new admsMainForm(aname);
+            setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "用户名或密码错误");
         }
