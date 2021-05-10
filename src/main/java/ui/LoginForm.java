@@ -24,11 +24,18 @@ public class LoginForm extends JFrame {
         // TODO add your code here
         String username = textField1.getText();
         String password = textField2.getText();
+        if(username.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "用户名不能为空");
+            return;
+        }
+        if(password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "密码不能为空");
+            return;
+        }
         if (Select.checkuser(username, password)) {
             System.out.println("登录成功");
         } else {
-            System.out.println("用户名或密码错误");
-            new ShowForm("用户名或密码错误，请重新登录！");
+            JOptionPane.showMessageDialog(null, "用户名或密码错误!");
         }
 
     }
@@ -37,11 +44,18 @@ public class LoginForm extends JFrame {
         // TODO add your code here
         String aname = textField1.getText();
         String apassword = textField2.getText();
+        if(aname.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "用户名不能为空");
+            return;
+        }
+        if(apassword.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "密码不能为空");
+            return;
+        }
         if (Select.checkadms(aname, apassword)) {
-            System.out.println("登录成功");
+            JOptionPane.showMessageDialog(null, "登录成功");
         } else {
-            System.out.println("用户名或密码错误");
-            new ShowForm("用户名或密码错误，请重新登录！");
+            JOptionPane.showMessageDialog(null, "用户名或密码错误");
         }
     }
 

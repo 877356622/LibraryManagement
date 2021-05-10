@@ -8,7 +8,6 @@ import dao.Insert;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
 import javax.swing.*;
 
 /**
@@ -26,18 +25,37 @@ public class RegisterForm extends JFrame {
         String a_password1 = textField2.getText();
         String a_password2 = textField3.getText();
         String ckeck = textField4.getText();
+        if (a_id.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "账号不能为空！");
+            return;
+        }
+        if (a_name.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "用户名不能为空！");
+            return;
+        }
+        if (a_password1.isEmpty() || a_password2.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "密码不能为空！");
+            return;
+        }
+        if (ckeck.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "管理员注册认证码不能为空！");
+            return;
+        }
         if (a_password1.equals(a_password2)) {
             if (ckeck.equals("19992000")) {
-                if(Insert.registeradmin(a_id, a_name, a_password1)) {
-                    new ShowForm("管理员注册成功");
-                }else {
-                    new ShowForm("管理员已存在");
+                if (Insert.registeradmin(a_id, a_name, a_password1)) {
+                    JOptionPane.showMessageDialog(null, "管理员注册成功！");
+                    new LoginForm();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "管理员已存在！");
+
                 }
             } else {
-                new ShowForm("管理员注册认证失败");
+                JOptionPane.showMessageDialog(null, "管理员注册认证失败！");
             }
         } else {
-            new ShowForm("两次输入密码不一致");
+            JOptionPane.showMessageDialog(null, "两次输入密码不一致！");
         }
     }
 
@@ -47,23 +65,31 @@ public class RegisterForm extends JFrame {
         String u_name = textField5.getText();
         String u_password1 = textField2.getText();
         String u_password2 = textField3.getText();
+        if (u_id.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "账号不能为空！");
+            return;
+        }
+        if (u_name.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "用户名不能为空！");
+            return;
+        }
+        if (u_password1.isEmpty() || u_password2.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "密码不能为空！");
+            return;
+        }
         if (u_password1.equals(u_password2)) {
-            if(Insert.registeruser(u_id, u_name, u_password1)) {
-                new ShowForm("用户注册成功");
-            }
-            else {
-                new ShowForm("用户已存在");
+            if (Insert.registeruser(u_id, u_name, u_password1)) {
+                JOptionPane.showMessageDialog(null, "用户注册成功");
+                new LoginForm();
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "用户已存在");
             }
         } else {
-            new ShowForm("两次输入密码不一致");
+            JOptionPane.showMessageDialog(null, "两次输入密码不一致");
         }
     }
 
-    private void button3ActionPerformed(ActionEvent e) {
-        // TODO add your code here
-        new LoginForm();
-        dispose();
-    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -80,7 +106,6 @@ public class RegisterForm extends JFrame {
         label5 = new JLabel();
         label6 = new JLabel();
         textField5 = new JTextField();
-        button3 = new JButton();
 
         //======== this ========
         setTitle("\u6ce8\u518c");
@@ -111,6 +136,7 @@ public class RegisterForm extends JFrame {
         //---- button1 ----
         button1.setText("\u7ba1\u7406\u5458\u6ce8\u518c");
         button1.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 button1ActionPerformed(e);
             }
@@ -121,6 +147,7 @@ public class RegisterForm extends JFrame {
         //---- button2 ----
         button2.setText("\u7528\u6237\u6ce8\u518c");
         button2.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 button2ActionPerformed(e);
             }
@@ -148,16 +175,6 @@ public class RegisterForm extends JFrame {
         contentPane.add(textField5);
         textField5.setBounds(180, 100, 95, textField5.getPreferredSize().height);
 
-        //---- button3 ----
-        button3.setText("\u8fd4\u56de");
-        button3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                button3ActionPerformed(e);
-            }
-        });
-        contentPane.add(button3);
-        button3.setBounds(new Rectangle(new Point(315, 135), button3.getPreferredSize()));
-
         contentPane.setPreferredSize(new Dimension(400, 345));
         pack();
         setLocationRelativeTo(getOwner());
@@ -178,6 +195,5 @@ public class RegisterForm extends JFrame {
     private JLabel label5;
     private JLabel label6;
     private JTextField textField5;
-    private JButton button3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
