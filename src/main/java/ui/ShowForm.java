@@ -11,29 +11,29 @@ import javax.swing.*;
 /**
  * @author unknown
  */
-public class LoginErrorForm extends JFrame {
-    public LoginErrorForm() {
-        initComponents();
+public class ShowForm extends JFrame {
+    public ShowForm(String message) {
+        initComponents(message);
     }
 
     private void button1ActionPerformed(ActionEvent e) {
         // TODO add your code here
-        setVisible(false);
+        dispose();
     }
 
-    private void initComponents() {
+    private void initComponents(String message) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         label1 = new JLabel();
         button1 = new JButton();
 
         //======== this ========
         setResizable(false);
-        setTitle("\u767b\u5f55\u5931\u8d25\u63d0\u9192");
+        setTitle("提示信息");
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
         //---- label1 ----
-        label1.setText("\u7528\u6237\u540d\u6216\u5bc6\u7801\u9519\u8bef\uff01\u8bf7\u91cd\u65b0\u767b\u5f55\uff01");
+        label1.setText(message);
         contentPane.add(label1);
         label1.setBounds(95, 65, 235, 50);
 

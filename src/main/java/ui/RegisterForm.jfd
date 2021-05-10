@@ -10,7 +10,7 @@ new FormModel {
 			"title": "注册"
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
-				"text": "用户名："
+				"text": "用户id："
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 60
 				"y": 70
@@ -20,14 +20,14 @@ new FormModel {
 				"text": "密码："
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 60
-				"y": 110
+				"y": 140
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label3"
 				"text": "确认密码："
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 60
-				"y": 150
+				"y": 180
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField1"
@@ -40,14 +40,14 @@ new FormModel {
 				name: "textField2"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 180
-				"y": 105
+				"y": 135
 				"width": 95
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField3"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 180
-				"y": 145
+				"y": 175
 				"width": 95
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
@@ -56,7 +56,7 @@ new FormModel {
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "button1ActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 60
-				"y": 220
+				"y": 250
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "button2"
@@ -64,20 +64,20 @@ new FormModel {
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "button2ActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 230
-				"y": 220
+				"y": 250
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label4"
 				"text": "注册管理员认证码："
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 60
-				"y": 190
+				"y": 220
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField4"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 180
-				"y": 185
+				"y": 215
 				"width": 95
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -88,9 +88,31 @@ new FormModel {
 				"x": 140
 				"y": 10
 			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label6"
+				"text": "用户名："
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 60
+				"y": 105
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField5"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 180
+				"y": 100
+				"width": 95
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button3"
+				"text": "返回"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "button3ActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 315
+				"y": 135
+			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"size": new java.awt.Dimension( 400, 345 )
 		} )
 	}
 }

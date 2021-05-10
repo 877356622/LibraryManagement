@@ -9,8 +9,8 @@ import dao.Select;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.*;
-import javax.swing.event.*;
 
 /**
  * @author 1
@@ -22,31 +22,32 @@ public class LoginForm extends JFrame {
 
     private void button2ActionPerformed(ActionEvent e) {
         // TODO add your code here
-        String username=textField1.getText();
-        String password=textField2.getText();
-        if(Select.checkuser(username,password)){
+        String username = textField1.getText();
+        String password = textField2.getText();
+        if (Select.checkuser(username, password)) {
             System.out.println("登录成功");
-        }else {
+        } else {
             System.out.println("用户名或密码错误");
-            new LoginErrorForm();
+            new ShowForm("用户名或密码错误，请重新登录！");
         }
+
     }
 
     private void button1ActionPerformed(ActionEvent e) {
         // TODO add your code here
-        String aname=textField1.getText();
-        String apassword=textField2.getText();
-        if(Select.checkadms(aname,apassword)){
+        String aname = textField1.getText();
+        String apassword = textField2.getText();
+        if (Select.checkadms(aname, apassword)) {
             System.out.println("登录成功");
-        }else {
+        } else {
             System.out.println("用户名或密码错误");
-            new LoginErrorForm();
+            new ShowForm("用户名或密码错误，请重新登录！");
         }
     }
 
     private void button3ActionPerformed(ActionEvent e) {
         // TODO add your code here
-        RegisterForm registerForm=new RegisterForm();
+        RegisterForm registerForm = new RegisterForm();
         registerForm.setVisible(true);
         setVisible(false);
         registerForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,7 +77,7 @@ public class LoginForm extends JFrame {
         label1.setBounds(new Rectangle(new Point(135, 50), label1.getPreferredSize()));
 
         //---- label2 ----
-        label2.setText("\u7528\u6237\u540d\uff1a");
+        label2.setText("\u8d26\u53f7\uff1a");
         contentPane.add(label2);
         label2.setBounds(new Rectangle(new Point(90, 110), label2.getPreferredSize()));
 
@@ -122,6 +123,8 @@ public class LoginForm extends JFrame {
         contentPane.setPreferredSize(new Dimension(400, 300));
         pack();
         setLocationRelativeTo(getOwner());
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

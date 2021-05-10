@@ -1,4 +1,70 @@
 package dao;
 
+import java.sql.*;
+
 public class Insert {
+    public static boolean registeradmin(String a_id, String a_name, String a_password) {
+        boolean flag=true;
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO administrators VALUES(?,?,?)";
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, a_id);
+            pstmt.setString(2, a_name);
+            pstmt.setString(3, a_password);
+            pstmt.execute();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            flag=false;
+        } finally {
+            try {
+                pstmt.close();
+                conn.close();
+                return flag;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    public static boolean registeruser(String u_id, String u_name, String u_password) {
+        boolean flag = true;
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO users VALUES(?,?,?)";
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, u_id);
+            pstmt.setString(2, u_name);
+            pstmt.setString(3, u_password);
+            pstmt.execute();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            flag = false;
+        } finally {
+            try {
+                pstmt.close();
+                conn.close();
+                return flag;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
 }
+
