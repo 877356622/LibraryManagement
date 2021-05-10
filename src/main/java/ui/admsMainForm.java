@@ -10,10 +10,12 @@ import dao.Select;
 import dao.Update;
 import entity.Administrators;
 import entity.Bookcategory;
+import entity.Books;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -83,24 +85,25 @@ public class admsMainForm extends JFrame {
         panel7.setVisible(false);
         panel8.setVisible(false);
         panel2.setVisible(true);
-        java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
-        list=Select.serchbookcategorys();
-        totalPage=list.size()%rowsPerPage==0?list.size()/rowsPerPage:list.size()/rowsPerPage+1;
+        java.util.List<Bookcategory> list = new ArrayList<Bookcategory>();
+        list = Select.serchbookcategorys();
+        totalPage = list.size() % rowsPerPage == 0 ? list.size() / rowsPerPage : list.size() / rowsPerPage + 1;
         spinner1.setValue(currentPage);
         textField4.setText(String.valueOf(totalPage));
-        bkdata=new Object[list.size()][bkhead.length];
-        for(int i=0;i<list.size();i++){
-            bkdata[i][0]=list.get(i).getBk_id();
-            bkdata[i][1]=list.get(i).getBk_name();
-            bkdata[i][2]=list.get(i).getBk_desc();
+        bkdata = new Object[list.size()][bkhead.length];
+        for (int i = 0; i < list.size(); i++) {
+            bkdata[i][0] = list.get(i).getBk_id();
+            bkdata[i][1] = list.get(i).getBk_name();
+            bkdata[i][2] = list.get(i).getBk_desc();
         }
-        DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+        DefaultTableModel tableModel1 = new DefaultTableModel(bkdata, bkhead);
         table1.setModel(tableModel1);
-        bkdata=null;
+        bkdata = null;
     }
 
     private void menuItem9ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书添加
         panel9.setVisible(false);
         panel1.setVisible(false);
         panel2.setVisible(false);
@@ -110,10 +113,18 @@ public class admsMainForm extends JFrame {
         panel7.setVisible(false);
         panel8.setVisible(false);
         panel3.setVisible(true);
+        List<Bookcategory> list = new ArrayList<Bookcategory>();
+        list = Select.serchbookcategorys();
+        for (int i = 0; i < list.size(); i++) {
+            String bk_name = list.get(i).getBk_name();
+            comboBox1.addItem(bk_name);
+        }
+
     }
 
     private void menuItem10ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书管理
         panel9.setVisible(false);
         panel1.setVisible(false);
         panel2.setVisible(false);
@@ -123,9 +134,21 @@ public class admsMainForm extends JFrame {
         panel7.setVisible(false);
         panel8.setVisible(false);
         panel4.setVisible(true);
+        List<Bookcategory> list = new ArrayList<Bookcategory>();
+        list = Select.serchbookcategorys();
+        for (int i = 0; i < list.size(); i++) {
+            String bk_name = list.get(i).getBk_name();
+            comboBox2.addItem(bk_name);
+            comboBox3.addItem(bk_name);
+        }
+        bdata = new Object[0][bhead.length];
+        DefaultTableModel tableModel2 = new DefaultTableModel(bdata, bhead);
+        table2.setModel(tableModel2);
+        bdata = null;
+
     }
 
-    private void menuItem6ActionPerformed(ActionEvent e,String aname) {
+    private void menuItem6ActionPerformed(ActionEvent e, String aname) {
         // TODO add your code here
         //查询个人信息
         panel9.setVisible(false);
@@ -137,13 +160,13 @@ public class admsMainForm extends JFrame {
         panel7.setVisible(false);
         panel8.setVisible(false);
         panel5.setVisible(true);
-        Administrators administrators= Select.serchadms(aname);
+        Administrators administrators = Select.serchadms(aname);
         textField26.setText(administrators.getA_id());
         textField27.setText(administrators.getA_name());
 
     }
 
-    private void menuItem7ActionPerformed(ActionEvent e,String aid) {
+    private void menuItem7ActionPerformed(ActionEvent e, String aid) {
         // TODO add your code here
         //修改个人信息
         panel9.setVisible(false);
@@ -155,7 +178,7 @@ public class admsMainForm extends JFrame {
         panel7.setVisible(false);
         panel8.setVisible(false);
         panel6.setVisible(true);
-        Administrators administrators=Select.serchadms(aid);
+        Administrators administrators = Select.serchadms(aid);
         textField28.setText(administrators.getA_id());
         textField29.setText(administrators.getA_name());
     }
@@ -163,20 +186,20 @@ public class admsMainForm extends JFrame {
     private void button1ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书类别添加按钮
-        String bk_id=textField1.getText();
-        String bk_name=textField2.getText();
-        String bk_desc=textField9.getText();
-        if(bk_id.isEmpty()){
+        String bk_id = textField1.getText();
+        String bk_name = textField2.getText();
+        String bk_desc = textField9.getText();
+        if (bk_id.isEmpty()) {
             JOptionPane.showMessageDialog(null, "图书类别id不能为空");
             return;
         }
-        if(bk_name.isEmpty()){
+        if (bk_name.isEmpty()) {
             JOptionPane.showMessageDialog(null, "图书类别名称不能为空");
             return;
         }
-        if(Insert.Insertbookcategory(bk_id,bk_name,bk_desc)){
+        if (Insert.Insertbookcategory(bk_id, bk_name, bk_desc)) {
             JOptionPane.showMessageDialog(null, "图书类别添加成功");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "图书类别添加失败，可能原因为图书id已存在");
         }
     }
@@ -192,27 +215,27 @@ public class admsMainForm extends JFrame {
     private void button14ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //修改用户名和密码
-        String a_id=textField28.getText();
-        String a_name=textField29.getText();
-        String a_password=textField30.getText();
-        if(a_id.isEmpty()){
+        String a_id = textField28.getText();
+        String a_name = textField29.getText();
+        String a_password = textField30.getText();
+        if (a_id.isEmpty()) {
             JOptionPane.showMessageDialog(null, "用户id不能为空");
             return;
         }
-        if(a_name.isEmpty()){
+        if (a_name.isEmpty()) {
             JOptionPane.showMessageDialog(null, "用户名不能为空");
             return;
         }
-        if(a_password.isEmpty()){
+        if (a_password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "密码不能为空");
             return;
         }
-        if(Update.updateAdms(a_id,a_name,a_password)){
+        if (Update.updateAdms(a_id, a_name, a_password)) {
             JOptionPane.showMessageDialog(null, "修改信息成功");
-            admsMainForm admsMainForm=new admsMainForm(a_id);
+            admsMainForm admsMainForm = new admsMainForm(a_id);
             admsMainForm.setVisible(true);
             admsMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(null, "修改信息失败");
 
         }
@@ -225,6 +248,11 @@ public class admsMainForm extends JFrame {
         textField28.setText("");
         textField29.setText("");
         textField30.setText("");
+    }
+
+    private void buttonGetMessageActionPerformed(ActionEvent e) {
+        // TODO add your code here
+        //获取
     }
 
     private void button12ActionPerformed(ActionEvent e) {
@@ -241,51 +269,96 @@ public class admsMainForm extends JFrame {
 
     private void button9ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书添加按钮
+        Books books = new Books();
+        books.setB_id(textField10.getText());
+        books.setB_name(textField11.getText());
+        books.setB_author(textField13.getText());
+        books.setB_edit(textField14.getText());
+        books.setB_price(Double.valueOf(textField15.getText()));
+        books.setB_desc(textField16.getText());
+        books.setBk_id(Select.serchbk_id(comboBox1.getSelectedItem()));
+        if(books.getB_id().isEmpty()){
+            JOptionPane.showMessageDialog(null,"图书编号不能为空");
+            return;
+        }
+        if(books.getB_author().isEmpty()){
+            JOptionPane.showMessageDialog(null,"图书作者不能为空");
+            return;
+        }
+        if(books.getB_name().isEmpty()){
+            JOptionPane.showMessageDialog(null,"图书名字不能为空");
+            return;
+        }
+        if(books.getB_desc().isEmpty()){
+            JOptionPane.showMessageDialog(null,"图书描述不能为空");
+            return;
+        }
+        if(books.getB_edit().isEmpty()){
+            JOptionPane.showMessageDialog(null,"图书出版社不能为空");
+            return;
+        }
+        if(String.valueOf(books.getB_price()).isEmpty()){
+            JOptionPane.showMessageDialog(null,"图书价格不能为空");
+            return;
+        }
+        if(Insert.Insertbooks(books)){
+            JOptionPane.showMessageDialog(null,"添加图书成功");
+        }else {
+            JOptionPane.showMessageDialog(null,"添加图书失败");
+        }
     }
 
     private void button10ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书添加重置按钮
+        textField10.setText("");
+        textField11.setText("");
+        textField13.setText("");
+        textField14.setText("");
+        textField15.setText("");
+        textField16.setText("");
     }
 
     private void button8ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书类别删除按钮
-        String bk_id=textField6.getText();
-        if(Delete.deletebookcategory(bk_id)){
-            JOptionPane.showMessageDialog(null,"删除成功");
-        }else {
-            JOptionPane.showMessageDialog(null,"删除失败");
+        String bk_id = textField6.getText();
+        if (Delete.deletebookcategory(bk_id)) {
+            JOptionPane.showMessageDialog(null, "删除成功");
+        } else {
+            JOptionPane.showMessageDialog(null, "删除失败");
         }
     }
 
     private void button7ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书类别修改按钮
-        String bk_id=textField6.getText();
-        String bk_name=textField7.getText();
-        String bk_desc=textField8.getText();
-        if(Update.updateBookcategory(bk_id,bk_name,bk_desc)){
-            JOptionPane.showMessageDialog(null,"修改成功");
-        }else {
-            JOptionPane.showMessageDialog(null,"修改失败");
+        String bk_id = textField6.getText();
+        String bk_name = textField7.getText();
+        String bk_desc = textField8.getText();
+        if (Update.updateBookcategory(bk_id, bk_name, bk_desc)) {
+            JOptionPane.showMessageDialog(null, "修改成功");
+        } else {
+            JOptionPane.showMessageDialog(null, "修改失败");
         }
     }
 
     private void button6ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书管理查询
-        String bk_name=textField5.getText();
-        java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
-        list=Select.serchbookcategorys(bk_name);
-        bkdata=new Object[list.size()][bkhead.length];
-        for(int i=0;i<list.size();i++){
-            bkdata[i][0]=list.get(i).getBk_id();
-            bkdata[i][1]=list.get(i).getBk_name();
-            bkdata[i][2]=list.get(i).getBk_desc();
+        String bk_name = textField5.getText();
+        java.util.List<Bookcategory> list = new ArrayList<Bookcategory>();
+        list = Select.serchbookcategorys(bk_name);
+        bkdata = new Object[list.size()][bkhead.length];
+        for (int i = 0; i < list.size(); i++) {
+            bkdata[i][0] = list.get(i).getBk_id();
+            bkdata[i][1] = list.get(i).getBk_name();
+            bkdata[i][2] = list.get(i).getBk_desc();
         }
-        DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+        DefaultTableModel tableModel1 = new DefaultTableModel(bkdata, bkhead);
         table1.setModel(tableModel1);
-        bkdata=null;
+        bkdata = null;
         spinner1.setValue(currentPage);
 
     }
@@ -293,44 +366,44 @@ public class admsMainForm extends JFrame {
     private void button5ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //跳转
-        currentPage=Integer.parseInt(String.valueOf(spinner1.getValue()));
-        if(currentPage>=1&&currentPage<=totalPage){
-            java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
-            list=Select.serchbookcategorys(currentPage,rowsPerPage);
-            bkdata=new Object[list.size()][bkhead.length];
-            for(int i=0;i<list.size();i++){
-                bkdata[i][0]=list.get(i).getBk_id();
-                bkdata[i][1]=list.get(i).getBk_name();
-                bkdata[i][2]=list.get(i).getBk_desc();
+        currentPage = Integer.parseInt(String.valueOf(spinner1.getValue()));
+        if (currentPage >= 1 && currentPage <= totalPage) {
+            java.util.List<Bookcategory> list = new ArrayList<Bookcategory>();
+            list = Select.serchbookcategorys(currentPage, rowsPerPage);
+            bkdata = new Object[list.size()][bkhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bkdata[i][0] = list.get(i).getBk_id();
+                bkdata[i][1] = list.get(i).getBk_name();
+                bkdata[i][2] = list.get(i).getBk_desc();
             }
-            DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+            DefaultTableModel tableModel1 = new DefaultTableModel(bkdata, bkhead);
             table1.setModel(tableModel1);
-            bkdata=null;
+            bkdata = null;
             spinner1.setValue(currentPage);
-        }else {
-            JOptionPane.showMessageDialog(null,"超出范围");
+        } else {
+            JOptionPane.showMessageDialog(null, "超出范围");
         }
     }
 
     private void button4ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书管理下一页
-        if(currentPage==totalPage){
-            JOptionPane.showMessageDialog(null,"已经是最后一页");
+        if (currentPage == totalPage) {
+            JOptionPane.showMessageDialog(null, "已经是最后一页");
             return;
-        }else {
+        } else {
             currentPage++;
-            java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
-            list=Select.serchbookcategorys(currentPage,rowsPerPage);
-            bkdata=new Object[list.size()][bkhead.length];
-            for(int i=0;i<list.size();i++){
-                bkdata[i][0]=list.get(i).getBk_id();
-                bkdata[i][1]=list.get(i).getBk_name();
-                bkdata[i][2]=list.get(i).getBk_desc();
+            java.util.List<Bookcategory> list = new ArrayList<Bookcategory>();
+            list = Select.serchbookcategorys(currentPage, rowsPerPage);
+            bkdata = new Object[list.size()][bkhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bkdata[i][0] = list.get(i).getBk_id();
+                bkdata[i][1] = list.get(i).getBk_name();
+                bkdata[i][2] = list.get(i).getBk_desc();
             }
-            DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+            DefaultTableModel tableModel1 = new DefaultTableModel(bkdata, bkhead);
             table1.setModel(tableModel1);
-            bkdata=null;
+            bkdata = null;
             spinner1.setValue(currentPage);
         }
     }
@@ -338,22 +411,22 @@ public class admsMainForm extends JFrame {
     private void button3ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书管理上一页
-        if(currentPage==1){
-            JOptionPane.showMessageDialog(null,"已经是第一页");
+        if (currentPage == 1) {
+            JOptionPane.showMessageDialog(null, "已经是第一页");
             return;
-        }else {
+        } else {
             currentPage--;
-            java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
-            list=Select.serchbookcategorys(currentPage,rowsPerPage);
-            bkdata=new Object[list.size()][bkhead.length];
-            for(int i=0;i<list.size();i++){
-                bkdata[i][0]=list.get(i).getBk_id();
-                bkdata[i][1]=list.get(i).getBk_name();
-                bkdata[i][2]=list.get(i).getBk_desc();
+            java.util.List<Bookcategory> list = new ArrayList<Bookcategory>();
+            list = Select.serchbookcategorys(currentPage, rowsPerPage);
+            bkdata = new Object[list.size()][bkhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bkdata[i][0] = list.get(i).getBk_id();
+                bkdata[i][1] = list.get(i).getBk_name();
+                bkdata[i][2] = list.get(i).getBk_desc();
             }
-            DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+            DefaultTableModel tableModel1 = new DefaultTableModel(bkdata, bkhead);
             table1.setModel(tableModel1);
-            bkdata=null;
+            bkdata = null;
             spinner1.setValue(currentPage);
         }
     }
@@ -467,10 +540,11 @@ public class admsMainForm extends JFrame {
         label33 = new JLabel();
         panel9 = new JPanel();
         label31 = new JLabel();
+        buttonGetMessage =new JButton();
 
         //======== this ========
-        String aname=Select.serchadms(aid).getA_name();
-        setTitle("欢迎管理员 “"+aname+"” 使用本图书管理系统");
+        String aname = Select.serchadms(aid).getA_name();
+        setTitle("欢迎管理员 “" + aname + "” 使用本图书管理系统");
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
@@ -555,7 +629,7 @@ public class admsMainForm extends JFrame {
                 menuItem6.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItem6ActionPerformed(e,aid);
+                        menuItem6ActionPerformed(e, aid);
                     }
                 });
                 menu3.add(menuItem6);
@@ -565,7 +639,7 @@ public class admsMainForm extends JFrame {
                 menuItem7.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItem7ActionPerformed(e,aid);
+                        menuItem7ActionPerformed(e, aid);
                     }
                 });
                 menu3.add(menuItem7);
@@ -947,7 +1021,7 @@ public class admsMainForm extends JFrame {
                 }
             });
             panel4.add(button12);
-            button12.setBounds(new Rectangle(new Point(525, 380), button12.getPreferredSize()));
+            button12.setBounds(new Rectangle(new Point(525, 420), button12.getPreferredSize()));
 
             //---- button13 ----
             button13.setText("\u5220\u9664");
@@ -958,7 +1032,19 @@ public class admsMainForm extends JFrame {
                 }
             });
             panel4.add(button13);
-            button13.setBounds(new Rectangle(new Point(525, 445), button13.getPreferredSize()));
+            button13.setBounds(new Rectangle(new Point(525, 470), button13.getPreferredSize()));
+
+
+            //---- buttonGetMessage ----
+            buttonGetMessage.setText("获取");
+            buttonGetMessage.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonGetMessageActionPerformed(e);
+                }
+            });
+            panel4.add(buttonGetMessage);
+            buttonGetMessage.setBounds(new Rectangle(new Point(525, 370), buttonGetMessage.getPreferredSize()));
         }
         contentPane.add(panel4);
         panel4.setBounds(45, 25, 620, 520);
@@ -1193,12 +1279,13 @@ public class admsMainForm extends JFrame {
     private JLabel label33;
     private JPanel panel9;
     private JLabel label31;
-    private Object[][] bkdata=null;
-    private String bkhead[]={"图书类别编号","图书类别名称","图书类别描述"};
-    private Object[][] bdata=null;
-    private String bhead[]={"图书编号","图书名称","图书类别名称","图书作者","价格","出版社","描述"};
-    private int currentPage=1;
-    private int rowsPerPage=10;
+    private Object[][] bkdata = null;
+    private String bkhead[] = {"图书类别编号", "图书类别名称", "图书类别描述"};
+    private Object[][] bdata = null;
+    private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社", "描述"};
+    private int currentPage = 1;
+    private int rowsPerPage = 10;
     private int totalPage;
+    private JButton buttonGetMessage;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

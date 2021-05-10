@@ -235,15 +235,12 @@ public class Select {
         String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
         Statement stmt = null;
         String sql = "SELECT * FROM bookcategory WHERE bk_name LIKE '%"+bk_name+"%'";
-        System.out.println(sql);
         ResultSet rs = null;
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             conn = DriverManager.getConnection(url, "lhh", "lhh1234");
             System.out.println("连接: " + conn);
             stmt = conn.createStatement();
-            /*pstmt.setString(1,"%"+bk_name+"%");
-            System.out.println("1111"+pstmt.toString());*/
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Bookcategory bookcategory=new Bookcategory();
@@ -266,5 +263,38 @@ public class Select {
             }
         }
         return list;
+    }
+
+    public static String serchbk_id(Object bk_name){
+        String bk_id="";
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM bookcategory WHERE bk_name=?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, String.valueOf(bk_name));
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                bk_id=rs.getString("bk_id");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return bk_id;
     }
 }
