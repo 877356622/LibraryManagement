@@ -56,7 +56,7 @@ public class LoginForm extends JFrame {
         String aname = Select.checkadms(aid, apassword);
         if (!aname.isEmpty()) {
             JOptionPane.showMessageDialog(null, "登录成功");
-            admsMainForm admsMainForm=new admsMainForm(aname);
+            admsMainForm admsMainForm=new admsMainForm(aid);
             admsMainForm.setVisible(true);
             admsMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(false);

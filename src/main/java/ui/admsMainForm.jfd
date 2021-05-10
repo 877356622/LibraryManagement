@@ -27,7 +27,7 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 10
 					"y": 55
-					"width": 80
+					"width": 95
 					"height": 30
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
@@ -427,7 +427,7 @@ new FormModel {
 					name: "label19"
 					"text": "图书描述："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 60
+					"width": 70
 					"height": 15
 					"x": 35
 					"y": 440
@@ -436,7 +436,7 @@ new FormModel {
 					name: "label20"
 					"text": "图书价格："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 60
+					"width": 70
 					"height": 15
 					"x": 295
 					"y": 415
@@ -445,7 +445,7 @@ new FormModel {
 					name: "label21"
 					"text": "图书出版社："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 72
+					"width": 80
 					"height": 15
 					"x": 295
 					"y": 380
@@ -454,7 +454,7 @@ new FormModel {
 					name: "label22"
 					"text": "图书作者："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 60
+					"width": 70
 					"height": 15
 					"x": 295
 					"y": 350
@@ -463,7 +463,7 @@ new FormModel {
 					name: "label23"
 					"text": "图书类别："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 60
+					"width": 70
 					"height": 15
 					"x": 35
 					"y": 410
@@ -472,7 +472,7 @@ new FormModel {
 					name: "label24"
 					"text": "图书名称："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 60
+					"width": 70
 					"height": 15
 					"x": 35
 					"y": 380
@@ -481,7 +481,7 @@ new FormModel {
 					name: "label25"
 					"text": "图书编号："
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-					"width": 60
+					"width": 70
 					"height": 15
 					"y": 350
 					"x": 35

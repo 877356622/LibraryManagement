@@ -4,6 +4,10 @@
 
 package ui;
 
+import dao.Select;
+import dao.Update;
+import entity.Administrators;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,12 +16,20 @@ import javax.swing.*;
  * @author 1
  */
 public class admsMainForm extends JFrame {
-    public admsMainForm(String aname) {
-        initComponents(aname);
+    public admsMainForm(String aid) {
+        initComponents(aid);
     }
 
     private void menuItem1ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        panel9.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
         panel1.setVisible(true);
     }
 
@@ -29,30 +41,102 @@ public class admsMainForm extends JFrame {
 
     private void menuItem4ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel8.setVisible(false);
+        panel7.setVisible(true);
     }
 
     private void menuItem5ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(true);
     }
 
     private void menuItem8ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
+        panel2.setVisible(true);
     }
 
     private void menuItem9ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
+        panel3.setVisible(true);
     }
 
     private void menuItem10ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
+        panel4.setVisible(true);
     }
 
-    private void menuItem6ActionPerformed(ActionEvent e) {
+    private void menuItem6ActionPerformed(ActionEvent e,String aname) {
         // TODO add your code here
+        //查询个人信息
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
+        panel5.setVisible(true);
+        Administrators administrators= Select.serchadms(aname);
+        textField26.setText(administrators.getA_id());
+        textField27.setText(administrators.getA_name());
+
     }
 
-    private void menuItem7ActionPerformed(ActionEvent e) {
+    private void menuItem7ActionPerformed(ActionEvent e,String aid) {
         // TODO add your code here
+        //修改个人信息
+        panel9.setVisible(false);
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
+        panel6.setVisible(true);
+        Administrators administrators=Select.serchadms(aid);
+        textField28.setText(administrators.getA_id());
+        textField29.setText(administrators.getA_name());
     }
 
     private void button1ActionPerformed(ActionEvent e) {
@@ -65,10 +149,28 @@ public class admsMainForm extends JFrame {
 
     private void button14ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //修改用户名和密码
+        String a_id=textField28.getText();
+        String a_name=textField29.getText();
+        String a_password=textField30.getText();
+        if(Update.updateAdms(a_id,a_name,a_password)){
+            JOptionPane.showMessageDialog(null, "修改信息成功");
+            admsMainForm admsMainForm=new admsMainForm(a_id);
+            admsMainForm.setVisible(true);
+            admsMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }else {
+            JOptionPane.showMessageDialog(null, "修改信息失败");
+
+        }
+
     }
 
     private void button15ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //重置
+        textField28.setText("");
+        textField29.setText("");
+        textField30.setText("");
     }
 
     private void button12ActionPerformed(ActionEvent e) {
@@ -115,7 +217,7 @@ public class admsMainForm extends JFrame {
         // TODO add your code here
     }
 
-    private void initComponents(String aname) {
+    private void initComponents(final String aid) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
         menu1 = new JMenu();
@@ -226,6 +328,8 @@ public class admsMainForm extends JFrame {
         label31 = new JLabel();
 
         //======== this ========
+        String aname=Select.serchadms(aid).getA_name();
+        setTitle("欢迎管理员 “"+aname+"” 使用本图书管理系统");
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
@@ -310,7 +414,7 @@ public class admsMainForm extends JFrame {
                 menuItem6.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItem6ActionPerformed(e);
+                        menuItem6ActionPerformed(e,aid);
                     }
                 });
                 menu3.add(menuItem6);
@@ -320,7 +424,7 @@ public class admsMainForm extends JFrame {
                 menuItem7.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItem7ActionPerformed(e);
+                        menuItem7ActionPerformed(e,aid);
                     }
                 });
                 menu3.add(menuItem7);
@@ -368,7 +472,7 @@ public class admsMainForm extends JFrame {
             //---- label3 ----
             label3.setText("\u56fe\u4e66\u7c7b\u522b\u540d\u79f0:");
             panel1.add(label3);
-            label3.setBounds(10, 55, 80, 30);
+            label3.setBounds(10, 55, 95, 30);
 
             //---- label2 ----
             label2.setText("\u56fe\u4e66\u7c7b\u522b\u63cf\u8ff0:");
@@ -647,37 +751,37 @@ public class admsMainForm extends JFrame {
             //---- label19 ----
             label19.setText("\u56fe\u4e66\u63cf\u8ff0\uff1a");
             panel4.add(label19);
-            label19.setBounds(35, 440, 60, 15);
+            label19.setBounds(35, 440, 70, 15);
 
             //---- label20 ----
             label20.setText("\u56fe\u4e66\u4ef7\u683c\uff1a");
             panel4.add(label20);
-            label20.setBounds(295, 415, 60, 15);
+            label20.setBounds(295, 415, 70, 15);
 
             //---- label21 ----
             label21.setText("\u56fe\u4e66\u51fa\u7248\u793e\uff1a");
             panel4.add(label21);
-            label21.setBounds(295, 380, 72, 15);
+            label21.setBounds(295, 380, 80, 15);
 
             //---- label22 ----
             label22.setText("\u56fe\u4e66\u4f5c\u8005\uff1a");
             panel4.add(label22);
-            label22.setBounds(295, 350, 60, 15);
+            label22.setBounds(295, 350, 70, 15);
 
             //---- label23 ----
             label23.setText("\u56fe\u4e66\u7c7b\u522b\uff1a");
             panel4.add(label23);
-            label23.setBounds(35, 410, 60, 15);
+            label23.setBounds(35, 410, 70, 15);
 
             //---- label24 ----
             label24.setText("\u56fe\u4e66\u540d\u79f0\uff1a");
             panel4.add(label24);
-            label24.setBounds(35, 380, 60, 15);
+            label24.setBounds(35, 380, 70, 15);
 
             //---- label25 ----
             label25.setText("\u56fe\u4e66\u7f16\u53f7\uff1a");
             panel4.add(label25);
-            label25.setBounds(35, 350, 60, 15);
+            label25.setBounds(35, 350, 70, 15);
             panel4.add(textField19);
             textField19.setBounds(105, 350, 130, textField19.getPreferredSize().height);
             panel4.add(textField20);
@@ -826,11 +930,17 @@ public class admsMainForm extends JFrame {
         contentPane.add(panel9);
         panel9.setBounds(130, 75, 445, 200);
 
+        panel1.setVisible(false);
+        panel2.setVisible(false);
+        panel3.setVisible(false);
+        panel4.setVisible(false);
+        panel5.setVisible(false);
+        panel6.setVisible(false);
+        panel7.setVisible(false);
+        panel8.setVisible(false);
         contentPane.setPreferredSize(new Dimension(700, 600));
         pack();
         setLocationRelativeTo(getOwner());
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

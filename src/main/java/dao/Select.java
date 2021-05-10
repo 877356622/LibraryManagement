@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Administrators;
 import entity.Books;
 
 import java.sql.*;
@@ -117,5 +118,40 @@ public class Select {
             }
         }
         return aname;
+    }
+
+    public static Administrators serchadms(String aid){
+        Administrators administrators=new Administrators();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM administrators WHERE a_id=?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, aid);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                administrators.setA_id(rs.getString("a_id"));
+                administrators.setA_name(rs.getString("a_name"));
+                administrators.setA_password(rs.getString("a_password"));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return administrators;
     }
 }
