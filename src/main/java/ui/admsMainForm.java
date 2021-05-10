@@ -4,6 +4,7 @@
 
 package ui;
 
+import dao.Delete;
 import dao.Insert;
 import dao.Select;
 import dao.Update;
@@ -244,10 +245,26 @@ public class admsMainForm extends JFrame {
 
     private void button8ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书类别删除按钮
+        String bk_id=textField6.getText();
+        if(Delete.deletebookcategory(bk_id)){
+            JOptionPane.showMessageDialog(null,"删除成功");
+        }else {
+            JOptionPane.showMessageDialog(null,"删除失败");
+        }
     }
 
     private void button7ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书类别修改按钮
+        String bk_id=textField6.getText();
+        String bk_name=textField7.getText();
+        String bk_desc=textField8.getText();
+        if(Update.updateBookcategory(bk_id,bk_name,bk_desc)){
+            JOptionPane.showMessageDialog(null,"修改成功");
+        }else {
+            JOptionPane.showMessageDialog(null,"修改失败");
+        }
     }
 
     private void button6ActionPerformed(ActionEvent e) {
