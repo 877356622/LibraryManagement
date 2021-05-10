@@ -85,6 +85,9 @@ public class admsMainForm extends JFrame {
         panel2.setVisible(true);
         java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
         list=Select.serchbookcategorys();
+        totalPage=list.size()%rowsPerPage==0?list.size()/rowsPerPage:list.size()/rowsPerPage+1;
+        spinner1.setValue(currentPage);
+        textField4.setText(String.valueOf(totalPage));
         bkdata=new Object[list.size()][bkhead.length];
         for(int i=0;i<list.size();i++){
             bkdata[i][0]=list.get(i).getBk_id();
@@ -93,6 +96,7 @@ public class admsMainForm extends JFrame {
         }
         DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
         table1.setModel(tableModel1);
+        bkdata=null;
     }
 
     private void menuItem9ActionPerformed(ActionEvent e) {
@@ -269,18 +273,89 @@ public class admsMainForm extends JFrame {
 
     private void button6ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书管理查询
+        String bk_name=textField5.getText();
+        java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
+        list=Select.serchbookcategorys(bk_name);
+        bkdata=new Object[list.size()][bkhead.length];
+        for(int i=0;i<list.size();i++){
+            bkdata[i][0]=list.get(i).getBk_id();
+            bkdata[i][1]=list.get(i).getBk_name();
+            bkdata[i][2]=list.get(i).getBk_desc();
+        }
+        DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+        table1.setModel(tableModel1);
+        bkdata=null;
+        spinner1.setValue(currentPage);
+
     }
 
     private void button5ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //跳转
+        currentPage=Integer.parseInt(String.valueOf(spinner1.getValue()));
+        if(currentPage>=1&&currentPage<=totalPage){
+            java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
+            list=Select.serchbookcategorys(currentPage,rowsPerPage);
+            bkdata=new Object[list.size()][bkhead.length];
+            for(int i=0;i<list.size();i++){
+                bkdata[i][0]=list.get(i).getBk_id();
+                bkdata[i][1]=list.get(i).getBk_name();
+                bkdata[i][2]=list.get(i).getBk_desc();
+            }
+            DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+            table1.setModel(tableModel1);
+            bkdata=null;
+            spinner1.setValue(currentPage);
+        }else {
+            JOptionPane.showMessageDialog(null,"超出范围");
+        }
     }
 
     private void button4ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书管理下一页
+        if(currentPage==totalPage){
+            JOptionPane.showMessageDialog(null,"已经是最后一页");
+            return;
+        }else {
+            currentPage++;
+            java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
+            list=Select.serchbookcategorys(currentPage,rowsPerPage);
+            bkdata=new Object[list.size()][bkhead.length];
+            for(int i=0;i<list.size();i++){
+                bkdata[i][0]=list.get(i).getBk_id();
+                bkdata[i][1]=list.get(i).getBk_name();
+                bkdata[i][2]=list.get(i).getBk_desc();
+            }
+            DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+            table1.setModel(tableModel1);
+            bkdata=null;
+            spinner1.setValue(currentPage);
+        }
     }
 
     private void button3ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书管理上一页
+        if(currentPage==1){
+            JOptionPane.showMessageDialog(null,"已经是第一页");
+            return;
+        }else {
+            currentPage--;
+            java.util.List<Bookcategory> list=new ArrayList<Bookcategory>();
+            list=Select.serchbookcategorys(currentPage,rowsPerPage);
+            bkdata=new Object[list.size()][bkhead.length];
+            for(int i=0;i<list.size();i++){
+                bkdata[i][0]=list.get(i).getBk_id();
+                bkdata[i][1]=list.get(i).getBk_name();
+                bkdata[i][2]=list.get(i).getBk_desc();
+            }
+            DefaultTableModel tableModel1=new DefaultTableModel(bkdata,bkhead);
+            table1.setModel(tableModel1);
+            bkdata=null;
+            spinner1.setValue(currentPage);
+        }
     }
 
     private void initComponents(final String aid) {
@@ -1122,5 +1197,8 @@ public class admsMainForm extends JFrame {
     private String bkhead[]={"图书类别编号","图书类别名称","图书类别描述"};
     private Object[][] bdata=null;
     private String bhead[]={"图书编号","图书名称","图书类别名称","图书作者","价格","出版社","描述"};
+    private int currentPage=1;
+    private int rowsPerPage=10;
+    private int totalPage;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
