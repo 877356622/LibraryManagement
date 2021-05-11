@@ -34,6 +34,11 @@ public class LoginForm extends JFrame {
         String uname = Select.checkuser(uid, password);
         if (!uname.isEmpty()) {
             System.out.println("登录成功");
+            JOptionPane.showMessageDialog(null,"登录成功");
+            userMainForm userMainForm=new userMainForm();
+            userMainForm.setVisible(true);
+            userMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "用户名或密码错误!");
         }
@@ -80,8 +85,8 @@ public class LoginForm extends JFrame {
         button1 = new JButton();
         button2 = new JButton();
         button3 = new JButton();
-        textField1 = new JTextField("111111");
-        textField2 = new JTextField("111111");
+        textField1 = new JTextField();
+        textField2 = new JTextField();
 
         //======== this ========
         setTitle("\u767b\u5f55");
