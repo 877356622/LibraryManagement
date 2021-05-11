@@ -86,7 +86,7 @@ public class LoginForm extends JFrame {
         button2 = new JButton();
         button3 = new JButton();
         textField1 = new JTextField();
-        textField2 = new JTextField();
+        textField2 = new JPasswordField();
 
         //======== this ========
         setTitle("\u767b\u5f55");
@@ -160,6 +160,6 @@ public class LoginForm extends JFrame {
     private JButton button2;
     private JButton button3;
     private JTextField textField1;
-    private JTextField textField2;
+    private JPasswordField textField2;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
