@@ -253,10 +253,25 @@ public class admsMainForm extends JFrame {
 
     private void button12ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书修改
+        Books books=new Books();
+        books.setB_id(textField19.getText());
+        books.setB_name(textField20.getText());
+        books.setB_desc(textField22.getText());
+        books.setB_author(textField23.getText());
+        books.setB_edit(textField24.getText());
+        books.setB_number(Integer.parseInt(textField12.getText()));
+        books.setB_price(Double.valueOf(textField25.getText()));
+        if(Update.updateBooks(books)){
+            JOptionPane.showMessageDialog(null,"修改成功");
+        }else {
+            JOptionPane.showMessageDialog(null,"修改失败");
+        }
     }
 
     private void button13ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书删除
         String b_id=textField19.getText();
         if(Delete.deletebook(b_id)){
             JOptionPane.showMessageDialog(null,"删除成功");
