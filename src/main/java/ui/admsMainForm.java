@@ -139,9 +139,20 @@ public class admsMainForm extends JFrame {
         for (int i = 0; i < list.size(); i++) {
             String bk_name = list.get(i).getBk_name();
             comboBox2.addItem(bk_name);
-            comboBox3.addItem(bk_name);
         }
-        bdata = new Object[0][bhead.length];
+        List<Books> booksList=new ArrayList<Books>();
+        booksList=Select.serchBooks();
+        bdata = new Object[booksList.size()][bhead.length];
+        for(int i=0;i<booksList.size();i++){
+            bdata[i][0]=booksList.get(i).getB_id();
+            bdata[i][1]=booksList.get(i).getB_name();
+            bdata[i][2]=booksList.get(i).getB_name();
+            bdata[i][3]=booksList.get(i).getB_author();
+            bdata[i][4]=booksList.get(i).getB_price();
+            bdata[i][5]=booksList.get(i).getB_edit();
+            bdata[i][6]=booksList.get(i).getB_number();
+            bdata[i][7]=booksList.get(i).getB_desc();
+        }
         DefaultTableModel tableModel2 = new DefaultTableModel(bdata, bhead);
         table2.setModel(tableModel2);
         bdata = null;
@@ -282,6 +293,37 @@ public class admsMainForm extends JFrame {
 
     private void button11ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        //图书管理查找
+        String b_name=textField17.getText();
+        String b_author=textField18.getText();
+        String bk_id="";
+        List<Books> list = new ArrayList<Books>();
+        if(b_name.isEmpty()&&b_author.isEmpty()){
+            //
+            bk_id=Select.serchbk_id(comboBox2.getSelectedItem());
+            list=Select.serchBooksForBkid(bk_id);
+        }else if(!b_name.isEmpty()&&b_author.isEmpty()){
+            list=Select.serchBooksForName(b_name);
+
+        }else if(b_name.isEmpty()&&!b_author.isEmpty()){
+            list=Select.serchBooksForauthor(b_author);
+        }else{
+            list=Select.serchBooks(b_name,b_author);
+        }
+        bdata = new Object[list.size()][bhead.length];
+        for(int i=0;i<list.size();i++){
+            bdata[i][0]=list.get(i).getB_id();
+            bdata[i][1]=list.get(i).getB_name();
+            bdata[i][2]=list.get(i).getB_name();
+            bdata[i][3]=list.get(i).getB_author();
+            bdata[i][4]=list.get(i).getB_price();
+            bdata[i][5]=list.get(i).getB_edit();
+            bdata[i][6]=list.get(i).getB_number();
+            bdata[i][7]=list.get(i).getB_desc();
+        }
+        DefaultTableModel tableModel2 = new DefaultTableModel(bdata, bhead);
+        table2.setModel(tableModel2);
+        bdata = null;
     }
 
     private void button16ActionPerformed(ActionEvent e){
@@ -556,13 +598,11 @@ public class admsMainForm extends JFrame {
         label20 = new JLabel();
         label21 = new JLabel();
         label22 = new JLabel();
-        label23 = new JLabel();
         label24 = new JLabel();
         label25 = new JLabel();
         textField19 = new JTextField();
         textField20 = new JTextField();
         textField22 = new JTextField();
-        comboBox3 = new JComboBox();
         textField23 = new JTextField();
         textField24 = new JTextField();
         textField25 = new JTextField();
@@ -1003,7 +1043,7 @@ public class admsMainForm extends JFrame {
                 }
             });
             panel4.add(button11);
-            button11.setBounds(new Rectangle(new Point(555, 15), button11.getPreferredSize()));
+            button11.setBounds(new Rectangle(new Point(600, 15), button11.getPreferredSize()));
 
             //======== scrollPane3 ========
             {
@@ -1015,14 +1055,14 @@ public class admsMainForm extends JFrame {
             //---- label18 ----
             label18.setText("\u4f5c\u8005\uff1a");
             panel4.add(label18);
-            label18.setBounds(new Rectangle(new Point(455, 20), label18.getPreferredSize()));
+            label18.setBounds(new Rectangle(new Point(490, 20), label18.getPreferredSize()));
             panel4.add(textField18);
-            textField18.setBounds(490, 15, 55, textField18.getPreferredSize().height);
+            textField18.setBounds(530, 15, 55, textField18.getPreferredSize().height);
 
             //---- label19 ----
             label19.setText("\u56fe\u4e66\u63cf\u8ff0\uff1a");
             panel4.add(label19);
-            label19.setBounds(35, 475, 70, 15);
+            label19.setBounds(35, 440, 70, 15);
 
             //---- label20 ----
             label20.setText("\u56fe\u4e66\u4ef7\u683c\uff1a");
@@ -1039,10 +1079,6 @@ public class admsMainForm extends JFrame {
             panel4.add(label22);
             label22.setBounds(295, 350, 70, 15);
 
-            //---- label23 ----
-            label23.setText("\u56fe\u4e66\u7c7b\u522b\uff1a");
-            panel4.add(label23);
-            label23.setBounds(35, 410, 70, 15);
 
             //---- label24 ----
             label24.setText("\u56fe\u4e66\u540d\u79f0\uff1a");
@@ -1058,9 +1094,7 @@ public class admsMainForm extends JFrame {
             panel4.add(textField20);
             textField20.setBounds(105, 380, 130, textField20.getPreferredSize().height);
             panel4.add(textField22);
-            textField22.setBounds(105, 475, 380, 60);
-            panel4.add(comboBox3);
-            comboBox3.setBounds(110, 410, 125, comboBox3.getPreferredSize().height);
+            textField22.setBounds(105, 445, 380, 120);
             panel4.add(textField23);
             textField23.setBounds(370, 350, 115, textField23.getPreferredSize().height);
             panel4.add(textField24);
@@ -1093,9 +1127,9 @@ public class admsMainForm extends JFrame {
             //---- label35 ----
             label35.setText("\u56fe\u4e66\u6570\u91cf\uff1a");
             panel4.add(label35);
-            label35.setBounds(new Rectangle(new Point(35, 440), label35.getPreferredSize()));
+            label35.setBounds(new Rectangle(new Point(35, 410), label35.getPreferredSize()));
             panel4.add(textField12);
-            textField12.setBounds(105, 440, 130, textField12.getPreferredSize().height);
+            textField12.setBounds(105, 410, 130, textField12.getPreferredSize().height);
 
             //---- button16 ----
             button16.setText("\u83b7\u53d6");
@@ -1311,13 +1345,11 @@ public class admsMainForm extends JFrame {
     private JLabel label20;
     private JLabel label21;
     private JLabel label22;
-    private JLabel label23;
     private JLabel label24;
     private JLabel label25;
     private JTextField textField19;
     private JTextField textField20;
     private JTextField textField22;
-    private JComboBox comboBox3;
     private JTextField textField23;
     private JTextField textField24;
     private JTextField textField25;

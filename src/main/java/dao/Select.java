@@ -50,6 +50,175 @@ public class Select {
         return list;
     }
 
+    public static List<Books> serchBooksForName(String b_name) {
+        List<Books> list = new ArrayList<Books>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM books WHERE b_name LIKE ?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,"%"+b_name+"%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Books book = new Books();
+                book.setB_id(rs.getString("b_id"));
+                book.setBk_id(rs.getString("bk_id"));
+                book.setB_name(rs.getString("b_name"));
+                book.setB_desc(rs.getString("b_desc"));
+                book.setB_author(rs.getString("b_author"));
+                book.setB_price(rs.getDouble("b_price"));
+                book.setB_edit(rs.getString("b_edit"));
+                book.setB_number(rs.getInt("b_number"));
+                list.add(book);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public static List<Books> serchBooksForauthor(String b_author) {
+        List<Books> list = new ArrayList<Books>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM books WHERE b_author LIKE ?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,"%"+b_author+"%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Books book = new Books();
+                book.setB_id(rs.getString("b_id"));
+                book.setBk_id(rs.getString("bk_id"));
+                book.setB_name(rs.getString("b_name"));
+                book.setB_desc(rs.getString("b_desc"));
+                book.setB_author(rs.getString("b_author"));
+                book.setB_price(rs.getDouble("b_price"));
+                book.setB_edit(rs.getString("b_edit"));
+                book.setB_number(rs.getInt("b_number"));
+                list.add(book);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public static List<Books> serchBooksForBkid(String bk_id) {
+        List<Books> list = new ArrayList<Books>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM books WHERE bk_id LIKE ?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,"%"+bk_id+"%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Books book = new Books();
+                book.setB_id(rs.getString("b_id"));
+                book.setBk_id(rs.getString("bk_id"));
+                book.setB_name(rs.getString("b_name"));
+                book.setB_desc(rs.getString("b_desc"));
+                book.setB_author(rs.getString("b_author"));
+                book.setB_price(rs.getDouble("b_price"));
+                book.setB_edit(rs.getString("b_edit"));
+                book.setB_number(rs.getInt("b_number"));
+                list.add(book);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public static List<Books> serchBooks(String b_name,String b_author) {
+        List<Books> list = new ArrayList<Books>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM books WHERE b_name LIKE ? AND b_author LIKE ?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,"%"+b_name+"%");
+            pstmt.setString(2,"%"+b_author+"%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Books book = new Books();
+                book.setB_id(rs.getString("b_id"));
+                book.setBk_id(rs.getString("bk_id"));
+                book.setB_name(rs.getString("b_name"));
+                book.setB_desc(rs.getString("b_desc"));
+                book.setB_author(rs.getString("b_author"));
+                book.setB_price(rs.getDouble("b_price"));
+                book.setB_edit(rs.getString("b_edit"));
+                book.setB_number(rs.getInt("b_number"));
+                list.add(book);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
     public static String checkuser(String uid, String password) {
         String uname = "";
         Connection conn = null;
