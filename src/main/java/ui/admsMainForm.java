@@ -257,6 +257,12 @@ public class admsMainForm extends JFrame {
 
     private void button13ActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String b_id=textField19.getText();
+        if(Delete.deletebook(b_id)){
+            JOptionPane.showMessageDialog(null,"删除成功");
+        }else {
+            JOptionPane.showMessageDialog(null,"删除失败");
+        }
     }
 
     private void button11ActionPerformed(ActionEvent e) {
@@ -273,6 +279,10 @@ public class admsMainForm extends JFrame {
         }
         String b_id=textField19.getText();
         Books books=Select.getBooks(b_id);
+        if(books.getBk_id().length()==0){
+            JOptionPane.showMessageDialog(null,"没有该图书");
+            return;
+        }
         textField22.setText(books.getB_desc());
         textField12.setText(String.valueOf(books.getB_number()));
         textField20.setText(books.getB_name());

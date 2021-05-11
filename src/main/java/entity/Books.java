@@ -2,7 +2,7 @@ package entity;
 
 public class Books {
     private String b_id;
-    private String bk_id;
+    private String bk_id="";
     private String b_name;
     private String b_desc;
     private String b_author;
