@@ -8,6 +8,15 @@ public class Books {
     private String b_author;
     private String b_edit;
     private double b_price;
+    private int b_number;
+
+    public int getB_number() {
+        return b_number;
+    }
+
+    public void setB_number(int b_number) {
+        this.b_number = b_number;
+    }
 
     public String getB_id() {
         return b_id;

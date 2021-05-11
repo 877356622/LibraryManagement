@@ -106,7 +106,7 @@ public class Insert {
         Connection conn = null;
         String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
         PreparedStatement pstmt = null;
-        String sql = "INSERT INTO books VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO books VALUES(?,?,?,?,?,?,?,?)";
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             conn = DriverManager.getConnection(url, "lhh", "lhh1234");
@@ -119,6 +119,7 @@ public class Insert {
             pstmt.setString(5, books.getB_author());
             pstmt.setDouble(6, books.getB_price());
             pstmt.setString(7, books.getB_edit());
+            pstmt.setInt(8,books.getB_number());
             pstmt.execute();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
