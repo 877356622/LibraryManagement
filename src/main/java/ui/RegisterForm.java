@@ -97,12 +97,12 @@ public class RegisterForm extends JFrame {
         label2 = new JLabel();
         label3 = new JLabel();
         textField1 = new JTextField();
-        textField2 = new JTextField();
-        textField3 = new JTextField();
+        textField2 = new JPasswordField();
+        textField3 = new JPasswordField();
         button1 = new JButton();
         button2 = new JButton();
         label4 = new JLabel();
-        textField4 = new JTextField();
+        textField4 = new JPasswordField();
         label5 = new JLabel();
         label6 = new JLabel();
         textField5 = new JTextField();
