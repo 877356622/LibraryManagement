@@ -35,7 +35,7 @@ public class LoginForm extends JFrame {
         if (!uname.isEmpty()) {
             System.out.println("登录成功");
             JOptionPane.showMessageDialog(null,"登录成功");
-            userMainForm userMainForm=new userMainForm(uid);
+            UserMainForm userMainForm=new UserMainForm(uid);
             userMainForm.setVisible(true);
             userMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(false);
@@ -60,7 +60,7 @@ public class LoginForm extends JFrame {
         String aname = Select.checkadms(aid, apassword);
         if (!aname.isEmpty()) {
             JOptionPane.showMessageDialog(null, "登录成功");
-            admsMainForm admsMainForm=new admsMainForm(aid);
+            AdmsMainForm admsMainForm=new AdmsMainForm(aid);
             admsMainForm.setVisible(true);
             admsMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(false);

@@ -4,12 +4,14 @@
 
 package ui;
 
+import dao.Insert;
 import dao.Select;
 import dao.Update;
 import entity.Bookcategory;
 import entity.Books;
 import entity.Borrows;
 import entity.Users;
+import util.CreateUUID;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -22,8 +24,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * @author 1
  */
-public class userMainForm extends JFrame {
-    public userMainForm(String uid) {
+public class UserMainForm extends JFrame {
+    public UserMainForm(String uid) {
         initComponents(uid);
     }
 
@@ -216,8 +218,20 @@ public class userMainForm extends JFrame {
         bdata = null;
     }
 
-    private void BorrowBookBorrowButtonActionPerformed(ActionEvent e) {
+    private void BorrowBookBorrowButtonActionPerformed(ActionEvent e,String uid) {
         // TODO add your code here
+        Borrows borrows=new Borrows();
+        String br_id= CreateUUID.createID();
+        int count = BorrowBooktable.getSelectedRow();//获取你选中的行号（记录）
+        String b_id = BorrowBooktable.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
+        borrows.setBr_id(br_id);
+        borrows.setB_id(b_id);
+        borrows.setU_id(uid);
+        if(Insert.InsertBorrows(borrows)){
+            JOptionPane.showMessageDialog(null,"借书成功");
+        }else {
+            JOptionPane.showMessageDialog(null,"借书失败");
+        }
     }
 
     private void menuItemReturnBookActionPerformed(ActionEvent e, String uid) {
@@ -650,7 +664,7 @@ public class userMainForm extends JFrame {
             BorrowBookBorrowButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    BorrowBookBorrowButtonActionPerformed(e);
+                    BorrowBookBorrowButtonActionPerformed(e,uid);
                 }
             });
             BorrowBooks.add(BorrowBookBorrowButton);

@@ -22,8 +22,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * @author 1
  */
-public class admsMainForm extends JFrame {
-    public admsMainForm(String aid) {
+public class AdmsMainForm extends JFrame {
+    public AdmsMainForm(String aid) {
         initComponents(aid);
     }
 
