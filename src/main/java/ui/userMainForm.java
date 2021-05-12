@@ -4,6 +4,10 @@
 
 package ui;
 
+import dao.Select;
+import dao.Update;
+import entity.Users;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -13,8 +17,8 @@ import javax.swing.event.*;
  * @author 1
  */
 public class userMainForm extends JFrame {
-    public userMainForm() {
-        initComponents();
+    public userMainForm(String uid) {
+        initComponents(uid);
     }
 
     private void menuItem4ActionPerformed(ActionEvent e) {
@@ -33,7 +37,7 @@ public class userMainForm extends JFrame {
         ReturnBooks.setVisible(false);
     }
 
-    private void menuItemSeeInformationActionPerformed(ActionEvent e) {
+    private void menuItemSeeInformationActionPerformed(ActionEvent e,String uid) {
         // TODO add your code here
         Main.setVisible(false);
         SystemInfirmation.setVisible(false);
@@ -42,9 +46,12 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(false);
+        Users users=Select.serchuser(uid);
+        SeeIdText.setText(users.getU_id());
+        SeeNameText.setText(users.getU_name());
     }
 
-    private void menuItemModifyInformationActionPerformed(ActionEvent e) {
+    private void menuItemModifyInformationActionPerformed(ActionEvent e,String uid) {
         // TODO add your code here
         Main.setVisible(false);
         SystemInfirmation.setVisible(false);
@@ -53,10 +60,34 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(false);
+        Users users=Select.serchuser(uid);
+        ModifyIdText.setText(users.getU_id());
+        ModifyNameText.setText(users.getU_name());
     }
 
     private void ModifymodifyButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String uid=ModifyIdText.getText();
+        String uname=ModifyNameText.getText();
+        String upassword= String.valueOf(ModifyPasswordText.getPassword());
+        if (uid.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "用户id不能为空");
+            return;
+        }
+        if (uname.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "用户名不能为空");
+            return;
+        }
+        if (upassword.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "密码不能为空");
+            return;
+        }
+        if(Update.updateUsers(uid,uname,upassword)){
+            JOptionPane.showMessageDialog(null,"修改成功");
+            initComponents(uid);
+        }else{
+            JOptionPane.showMessageDialog(null,"修改失败");
+        }
     }
 
     private void menuItemSeeBookActionPerformed(ActionEvent e) {
@@ -124,7 +155,8 @@ public class userMainForm extends JFrame {
         // TODO add your code here
     }
 
-    private void initComponents() {
+    private void initComponents(final String uid) {
+        setTitle("欢迎 "+ Select.serchuser(uid).getU_name()+" 使用本图书管理系统");
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
         menu1 = new JMenu();
@@ -251,7 +283,7 @@ public class userMainForm extends JFrame {
                 menuItemSeeInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemSeeInformationActionPerformed(e);
+                        menuItemSeeInformationActionPerformed(e,uid);
                     }
                 });
                 menu2.add(menuItemSeeInformation);
@@ -261,7 +293,7 @@ public class userMainForm extends JFrame {
                 menuItemModifyInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemModifyInformationActionPerformed(e);
+                        menuItemModifyInformationActionPerformed(e,uid);
                     }
                 });
                 menu2.add(menuItemModifyInformation);

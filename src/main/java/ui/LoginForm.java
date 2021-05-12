@@ -35,7 +35,7 @@ public class LoginForm extends JFrame {
         if (!uname.isEmpty()) {
             System.out.println("登录成功");
             JOptionPane.showMessageDialog(null,"登录成功");
-            userMainForm userMainForm=new userMainForm();
+            userMainForm userMainForm=new userMainForm(uid);
             userMainForm.setVisible(true);
             userMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(false);

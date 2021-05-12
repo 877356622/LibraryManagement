@@ -243,9 +243,7 @@ public class admsMainForm extends JFrame {
         }
         if (Update.updateAdms(a_id, a_name, a_password)) {
             JOptionPane.showMessageDialog(null, "修改信息成功");
-            admsMainForm admsMainForm = new admsMainForm(a_id);
-            admsMainForm.setVisible(true);
-            admsMainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            initComponents(a_id);
         } else {
             JOptionPane.showMessageDialog(null, "修改信息失败");
 

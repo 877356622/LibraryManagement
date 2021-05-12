@@ -3,6 +3,7 @@ package dao;
 import entity.Administrators;
 import entity.Bookcategory;
 import entity.Books;
+import entity.Users;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -361,6 +362,7 @@ public class Select {
         }
         return list;
     }
+
     public static List<Bookcategory> serchbookcategorys(int currentPage,int rowsPerPage){
         List<Bookcategory> list=new ArrayList<Bookcategory>();
         Connection conn = null;
@@ -506,5 +508,40 @@ public class Select {
             }
         }
         return books;
+    }
+
+    public static Users serchuser(String uid){
+        Users users=new Users();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM users WHERE u_id=?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, uid);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                users.setU_id(rs.getString("u_id"));
+                users.setU_name(rs.getString("u_name"));
+                users.setU_password(rs.getString("u_password"));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return users;
     }
 }
