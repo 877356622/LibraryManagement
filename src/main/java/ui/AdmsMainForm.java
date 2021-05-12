@@ -308,7 +308,7 @@ public class AdmsMainForm extends JFrame {
         }else if(b_name.isEmpty()&&!b_author.isEmpty()){
             list=Select.serchBooksForauthor(b_author);
         }else{
-            list=Select.serchBooks(b_name,b_author);
+            list=Select.serchBooksForNameAndAuthor(b_name,b_author);
         }
         bdata = new Object[list.size()][bhead.length];
         for(int i=0;i<list.size();i++){

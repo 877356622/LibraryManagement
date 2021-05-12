@@ -114,50 +114,67 @@ public class UserMainForm extends JFrame {
             String bk_name = list.get(i).getBk_name();
             SeeBookBkNamecomboBox.addItem(bk_name);
         }
+        bdata = new Object[0][bhead.length];
+        DefaultTableModel tableModelSeeBooks = new DefaultTableModel(bdata, bhead);
+        tableSeeBooks.setModel(tableModelSeeBooks);
+        bdata = null;
     }
 
     private void SeeBookSeeButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
         String b_name = SeeBookNameText.getText();
         String b_author = SeeBookAothorText.getText();
-        String bk_id = "";
+        String bk_name = (String) SeeBookBkNamecomboBox.getSelectedItem();
         List<Books> list = new ArrayList<Books>();
-        if (b_name.isEmpty() && b_author.isEmpty()) {
-            //
-            bk_id = Select.serchbk_id(SeeBookBkNamecomboBox.getSelectedItem());
-            list = Select.serchBooksForBkid(bk_id);
-        } else if (!b_name.isEmpty() && b_author.isEmpty()) {
+        if (b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooks();
+        } else if (!b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
             list = Select.serchBooksForName(b_name);
-
-        } else if (b_name.isEmpty() && !b_author.isEmpty()) {
+        } else if (b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
             list = Select.serchBooksForauthor(b_author);
+        } else if (b_name.isEmpty() && b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForBkid(bk_id);
+        } else if (!b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooksForNameAndAuthor(b_name, b_author);
+        } else if (!b_name.isEmpty() && b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForNameAndBkid(b_name, bk_id);
+        } else if (b_name.isEmpty() && !b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForAuthorAndBkid(b_author, bk_id);
         } else {
-            list = Select.serchBooks(b_name, b_author);
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooks(b_name, b_author, bk_id);
         }
-        bdata = new Object[list.size()][bhead.length];
-        for (int i = 0; i < list.size(); i++) {
-            bdata[i][0] = list.get(i).getB_id();
-            bdata[i][1] = list.get(i).getB_name();
-            bdata[i][2] = list.get(i).getB_name();
-            bdata[i][3] = list.get(i).getB_author();
-            bdata[i][4] = list.get(i).getB_price();
-            bdata[i][5] = list.get(i).getB_edit();
-            bdata[i][6] = list.get(i).getB_number();
-            bdata[i][7] = list.get(i).getB_desc();
+        if (!bk_name.equals("-请选择-")) {
+            bdata = new Object[list.size()][bhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bdata[i][0] = list.get(i).getB_id();
+                bdata[i][1] = list.get(i).getB_name();
+                bdata[i][2] = bk_name;
+                bdata[i][3] = list.get(i).getB_author();
+                bdata[i][4] = list.get(i).getB_price();
+                bdata[i][5] = list.get(i).getB_edit();
+                bdata[i][6] = list.get(i).getB_number();
+                bdata[i][7] = list.get(i).getB_desc();
+            }
+        } else {
+            bdata = new Object[list.size()][bhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bdata[i][0] = list.get(i).getB_id();
+                bdata[i][1] = list.get(i).getB_name();
+                bdata[i][2] = Select.serchbkname(list.get(i).getB_id());
+                bdata[i][3] = list.get(i).getB_author();
+                bdata[i][4] = list.get(i).getB_price();
+                bdata[i][5] = list.get(i).getB_edit();
+                bdata[i][6] = list.get(i).getB_number();
+                bdata[i][7] = list.get(i).getB_desc();
+            }
         }
         DefaultTableModel tableModelSeeBooks = new DefaultTableModel(bdata, bhead);
         tableSeeBooks.setModel(tableModelSeeBooks);
         bdata = null;
-    }
-
-    private void SeeBookJumpButtonActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void SeeBookCurrentPagespinnerStateChanged(ChangeEvent e) {
-        // TODO add your code here
-        System.out.println("ee"+ e.getSource());
-        System.out.println(e.hashCode());
     }
 
     private void menuItemBorrowBookActionPerformed(ActionEvent e) {
@@ -182,30 +199,53 @@ public class UserMainForm extends JFrame {
         // TODO add your code here
         String b_name = BorrowBookNameText.getText();
         String b_author = BorrowBookAothorText.getText();
-        String bk_id = "";
+        String bk_name = (String) BorrowBookBkNamecomboBox.getSelectedItem();
         List<Books> list = new ArrayList<Books>();
-        if (b_name.isEmpty() && b_author.isEmpty()) {
-            //
-            bk_id = Select.serchbk_id(BorrowBookBkNamecomboBox.getSelectedItem());
-            list = Select.serchBooksForBkid(bk_id);
-        } else if (!b_name.isEmpty() && b_author.isEmpty()) {
+        if (b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooks();
+        } else if (!b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
             list = Select.serchBooksForName(b_name);
-
-        } else if (b_name.isEmpty() && !b_author.isEmpty()) {
+        } else if (b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
             list = Select.serchBooksForauthor(b_author);
+        } else if (b_name.isEmpty() && b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForBkid(bk_id);
+        } else if (!b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooksForNameAndAuthor(b_name, b_author);
+        } else if (!b_name.isEmpty() && b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForNameAndBkid(b_name, bk_id);
+        } else if (b_name.isEmpty() && !b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForAuthorAndBkid(b_author, bk_id);
         } else {
-            list = Select.serchBooks(b_name, b_author);
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooks(b_name, b_author, bk_id);
         }
-        bdata = new Object[list.size()][bhead.length];
-        for (int i = 0; i < list.size(); i++) {
-            bdata[i][0] = list.get(i).getB_id();
-            bdata[i][1] = list.get(i).getB_name();
-            bdata[i][2] = list.get(i).getB_name();
-            bdata[i][3] = list.get(i).getB_author();
-            bdata[i][4] = list.get(i).getB_price();
-            bdata[i][5] = list.get(i).getB_edit();
-            bdata[i][6] = list.get(i).getB_number();
-            bdata[i][7] = list.get(i).getB_desc();
+        if (!bk_name.equals("-请选择-")) {
+            bdata = new Object[list.size()][bhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bdata[i][0] = list.get(i).getB_id();
+                bdata[i][1] = list.get(i).getB_name();
+                bdata[i][2] = bk_name;
+                bdata[i][3] = list.get(i).getB_author();
+                bdata[i][4] = list.get(i).getB_price();
+                bdata[i][5] = list.get(i).getB_edit();
+                bdata[i][6] = list.get(i).getB_number();
+                bdata[i][7] = list.get(i).getB_desc();
+            }
+        } else {
+            bdata = new Object[list.size()][bhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bdata[i][0] = list.get(i).getB_id();
+                bdata[i][1] = list.get(i).getB_name();
+                bdata[i][2] = Select.serchbkname(list.get(i).getB_id());
+                bdata[i][3] = list.get(i).getB_author();
+                bdata[i][4] = list.get(i).getB_price();
+                bdata[i][5] = list.get(i).getB_edit();
+                bdata[i][6] = list.get(i).getB_number();
+                bdata[i][7] = list.get(i).getB_desc();
+            }
         }
         DefaultTableModel tableModelBorrowBooks = new DefaultTableModel(bdata, bhead);
         BorrowBooktable.setModel(tableModelBorrowBooks);
@@ -222,10 +262,10 @@ public class UserMainForm extends JFrame {
         borrows.setB_id(b_id);
         borrows.setU_id(uid);
         if (Insert.InsertBorrows(borrows)) {
-            if(Update.updateBrBooks(borrows.getB_id())) {
+            if (Update.updateBrBooks(borrows.getB_id())) {
                 JOptionPane.showMessageDialog(null, "借书成功");
-            }else {
-                JOptionPane.showMessageDialog(null,"借书失败");
+            } else {
+                JOptionPane.showMessageDialog(null, "借书失败");
             }
         } else {
             JOptionPane.showMessageDialog(null, "借书失败");
@@ -268,8 +308,8 @@ public class UserMainForm extends JFrame {
         String br_id;
         int count = ReturnBooktable.getSelectedRow();//获取你选中的行号（记录）
         br_id = ReturnBooktable.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
-        Borrows borrows=Select.serchBoroowsForBrid(br_id);
-        if(borrows.getRe_date()!=null) {
+        Borrows borrows = Select.serchBoroowsForBrid(br_id);
+        if (borrows.getRe_date() != null) {
             if (Update.updateBorrows(br_id)) {
                 if (Update.updateReBooks(borrows.getB_id())) {
                     JOptionPane.showMessageDialog(null, "还书成功");
@@ -279,8 +319,8 @@ public class UserMainForm extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "还书失败");
             }
-        }else {
-            JOptionPane.showMessageDialog(null,"图书已经归还");
+        } else {
+            JOptionPane.showMessageDialog(null, "图书已经归还");
         }
 
     }
@@ -350,10 +390,6 @@ public class UserMainForm extends JFrame {
         SeeBookBkNamecomboBox = new JComboBox();
         SeeBookBkNamelabel = new JLabel();
         SeeBookSeeButton = new JButton();
-        SeeBooktotalPagelabel = new JLabel();
-        SeeBooktotalPageText = new JTextField();
-        SeeBookCurrentPagespinner = new JSpinner();
-        SeeBookJumpButton = new JButton();
         BorrowBooks = new JPanel();
         BorrowBooklabel = new JLabel();
         BorrowBookSeeButton = new JButton();
@@ -600,33 +636,6 @@ public class UserMainForm extends JFrame {
             SeeBooks.add(SeeBookSeeButton);
             SeeBookSeeButton.setBounds(new Rectangle(new Point(560, 380), SeeBookSeeButton.getPreferredSize()));
 
-            //---- SeeBooktotalPagelabel ----
-            SeeBooktotalPagelabel.setText("\u603b\u9875\u6570\uff1a");
-            SeeBooks.add(SeeBooktotalPagelabel);
-            SeeBooktotalPagelabel.setBounds(new Rectangle(new Point(350, 10), SeeBooktotalPagelabel.getPreferredSize()));
-            SeeBooks.add(SeeBooktotalPageText);
-            SeeBooktotalPageText.setBounds(410, 10, 40, SeeBooktotalPageText.getPreferredSize().height);
-
-            //---- SeeBookCurrentPagespinner ----
-            SeeBookCurrentPagespinner.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    SeeBookCurrentPagespinnerStateChanged(e);
-                }
-            });
-            SeeBooks.add(SeeBookCurrentPagespinner);
-            SeeBookCurrentPagespinner.setBounds(485, 10, 55, SeeBookCurrentPagespinner.getPreferredSize().height);
-
-            //---- SeeBookJumpButton ----
-            SeeBookJumpButton.setText("\u8df3\u8f6c");
-            SeeBookJumpButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    SeeBookJumpButtonActionPerformed(e);
-                }
-            });
-            SeeBooks.add(SeeBookJumpButton);
-            SeeBookJumpButton.setBounds(new Rectangle(new Point(560, 10), SeeBookJumpButton.getPreferredSize()));
         }
         contentPane.add(SeeBooks);
         SeeBooks.setBounds(30, 25, 670, 450);
@@ -815,10 +824,6 @@ public class UserMainForm extends JFrame {
     private JComboBox SeeBookBkNamecomboBox;
     private JLabel SeeBookBkNamelabel;
     private JButton SeeBookSeeButton;
-    private JLabel SeeBooktotalPagelabel;
-    private JTextField SeeBooktotalPageText;
-    private JSpinner SeeBookCurrentPagespinner;
-    private JButton SeeBookJumpButton;
     private JPanel BorrowBooks;
     private JLabel BorrowBooklabel;
     private JButton BorrowBookSeeButton;
