@@ -6,12 +6,16 @@ package ui;
 
 import dao.Select;
 import dao.Update;
+import entity.Books;
 import entity.Users;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author 1
@@ -103,6 +107,36 @@ public class userMainForm extends JFrame {
 
     private void SeeBookSeeButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String b_name=SeeBookNameText.getText();
+        String b_author=SeeBookAothorText.getText();
+        String bk_id="";
+        List<Books> list = new ArrayList<Books>();
+        if(b_name.isEmpty()&&b_author.isEmpty()){
+            //
+            bk_id=Select.serchbk_id(SeeBookBkNamecomboBox.getSelectedItem());
+            list=Select.serchBooksForBkid(bk_id);
+        }else if(!b_name.isEmpty()&&b_author.isEmpty()){
+            list=Select.serchBooksForName(b_name);
+
+        }else if(b_name.isEmpty()&&!b_author.isEmpty()){
+            list=Select.serchBooksForauthor(b_author);
+        }else{
+            list=Select.serchBooks(b_name,b_author);
+        }
+        bdata = new Object[list.size()][bhead.length];
+        for(int i=0;i<list.size();i++){
+            bdata[i][0]=list.get(i).getB_id();
+            bdata[i][1]=list.get(i).getB_name();
+            bdata[i][2]=list.get(i).getB_name();
+            bdata[i][3]=list.get(i).getB_author();
+            bdata[i][4]=list.get(i).getB_price();
+            bdata[i][5]=list.get(i).getB_edit();
+            bdata[i][6]=list.get(i).getB_number();
+            bdata[i][7]=list.get(i).getB_desc();
+        }
+        DefaultTableModel tableModelSeeBooks = new DefaultTableModel(bdata, bhead);
+        tableSeeBooks.setModel(tableModelSeeBooks);
+        bdata = null;
     }
 
     private void SeeBookJumpButtonActionPerformed(ActionEvent e) {
@@ -152,6 +186,14 @@ public class userMainForm extends JFrame {
     }
 
     private void returnBookReturnbuttonActionPerformed(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void menuItemSeeInformationActionPerformed(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void menuItemModifyInformationActionPerformed(ActionEvent e) {
         // TODO add your code here
     }
 
@@ -283,7 +325,7 @@ public class userMainForm extends JFrame {
                 menuItemSeeInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemSeeInformationActionPerformed(e,uid);
+                        menuItemSeeInformationActionPerformed(e);
                     }
                 });
                 menu2.add(menuItemSeeInformation);
@@ -293,7 +335,7 @@ public class userMainForm extends JFrame {
                 menuItemModifyInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemModifyInformationActionPerformed(e,uid);
+                        menuItemModifyInformationActionPerformed(e);
                     }
                 });
                 menu2.add(menuItemModifyInformation);
@@ -684,5 +726,12 @@ public class userMainForm extends JFrame {
     private JButton returnBookReturnbutton;
     private JPanel Main;
     private JLabel Mainlabel;
+    private Object[][] brdata = null;
+    private String brhead[] = {"图书编号", "图书名称", "借书时间","还书时间"};
+    private Object[][] bdata = null;
+    private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社","数量", "描述"};
+    private int currentPage = 1;
+    private int rowsPerPage = 10;
+    private int totalPage;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
