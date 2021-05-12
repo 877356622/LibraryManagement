@@ -580,4 +580,41 @@ public class Select {
         }
         return list;
     }
+
+    public static Borrows serchBoroowsForBrid(String brid){
+        Borrows borrows=new Borrows();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM borrows WHERE br_id=?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, brid);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                borrows.setB_id(rs.getString("b_id"));
+                borrows.setU_id(rs.getString("u_id"));
+                borrows.setBr_id(rs.getString("br_id"));
+                borrows.setBr_date(rs.getDate("br_time"));
+                borrows.setRe_date(rs.getDate("re_time"));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return borrows;
+    }
 }

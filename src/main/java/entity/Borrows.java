@@ -7,7 +7,7 @@ public class Borrows {
     private String b_id;
     private String u_id;
     private Date br_date;
-    private Date re_date;
+    private Date re_date=null;
 
     public String getBr_id() {
         return br_id;

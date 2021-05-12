@@ -156,14 +156,8 @@ public class UserMainForm extends JFrame {
 
     private void SeeBookCurrentPagespinnerStateChanged(ChangeEvent e) {
         // TODO add your code here
-    }
-
-    private void SeeBookCurrentPagespinnerAncestorAdded(AncestorEvent e) {
-        // TODO add your code here
-    }
-
-    private void SeeBookCurrentPagespinnerAncestorMoved(AncestorEvent e) {
-        // TODO add your code here
+        System.out.println("ee"+ e.getSource());
+        System.out.println(e.hashCode());
     }
 
     private void menuItemBorrowBookActionPerformed(ActionEvent e) {
@@ -218,19 +212,23 @@ public class UserMainForm extends JFrame {
         bdata = null;
     }
 
-    private void BorrowBookBorrowButtonActionPerformed(ActionEvent e,String uid) {
+    private void BorrowBookBorrowButtonActionPerformed(ActionEvent e, String uid) {
         // TODO add your code here
-        Borrows borrows=new Borrows();
-        String br_id= CreateUUID.createID();
+        Borrows borrows = new Borrows();
+        String br_id = CreateUUID.createID();
         int count = BorrowBooktable.getSelectedRow();//获取你选中的行号（记录）
         String b_id = BorrowBooktable.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
         borrows.setBr_id(br_id);
         borrows.setB_id(b_id);
         borrows.setU_id(uid);
-        if(Insert.InsertBorrows(borrows)){
-            JOptionPane.showMessageDialog(null,"借书成功");
-        }else {
-            JOptionPane.showMessageDialog(null,"借书失败");
+        if (Insert.InsertBorrows(borrows)) {
+            if(Update.updateBrBooks(borrows.getB_id())) {
+                JOptionPane.showMessageDialog(null, "借书成功");
+            }else {
+                JOptionPane.showMessageDialog(null,"借书失败");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "借书失败");
         }
     }
 
@@ -244,35 +242,71 @@ public class UserMainForm extends JFrame {
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(true);
         List<Borrows> list = Select.serchBoroows(uid);
-        brdata = new Object[list.size()][brhead.length];
+        int j = 0;
         for (int i = 0; i < list.size(); i++) {
-            brdata[i][0] = list.get(i).getBr_id();
-            brdata[i][1] = Select.getBooks(list.get(i).getB_id()).getB_name();
-            brdata[i][2] = list.get(i).getBr_date();
-            brdata[i][3] = list.get(i).getRe_date();
+            if (list.get(i).getRe_date() == null) {
+                j++;
+            }
+        }
+        brdata = new Object[j][brhead.length];
+        int flag = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getRe_date() == null) {
+                brdata[flag][0] = list.get(i).getBr_id();
+                brdata[flag][1] = Select.getBooks(list.get(i).getB_id()).getB_name();
+                brdata[flag][2] = list.get(i).getBr_date();
+                brdata[flag++][3] = list.get(i).getRe_date();
+            }
         }
         DefaultTableModel tableModelReturnBooks = new DefaultTableModel(brdata, brhead);
         ReturnBooktable.setModel(tableModelReturnBooks);
         brdata = null;
-
     }
 
-    private void returnBookReturnbuttonActionPerformed(ActionEvent e,String uid) {
+    private void returnBookReturnbuttonActionPerformed(ActionEvent e) {
         // TODO add your code here
         String br_id;
         int count = ReturnBooktable.getSelectedRow();//获取你选中的行号（记录）
         br_id = ReturnBooktable.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
-        String re_time =ReturnBooktable.getValueAt(count,3).toString();
-        if(re_time.isEmpty()) {
+        Borrows borrows=Select.serchBoroowsForBrid(br_id);
+        if(borrows.getRe_date()!=null) {
             if (Update.updateBorrows(br_id)) {
-                JOptionPane.showMessageDialog(null, "还书成功");
-                initComponents(uid);
+                if (Update.updateReBooks(borrows.getB_id())) {
+                    JOptionPane.showMessageDialog(null, "还书成功");
+                } else {
+                    JOptionPane.showMessageDialog(null, "还书失败");
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "还书失败");
             }
-        }else{
-            JOptionPane.showMessageDialog(null,"书本已归还");
+        }else {
+            JOptionPane.showMessageDialog(null,"图书已经归还");
         }
+
+    }
+
+    private void ReturnBookSeeHistorybuttonActionPerformed(ActionEvent e, String uid) {
+        // TODO add your code here
+        List<Borrows> list = Select.serchBoroows(uid);
+        int j = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getRe_date() != null) {
+                j++;
+            }
+        }
+        brdata = new Object[j][brhead.length];
+        int flag = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getRe_date() != null) {
+                brdata[flag][0] = list.get(i).getBr_id();
+                brdata[flag][1] = Select.getBooks(list.get(i).getB_id()).getB_name();
+                brdata[flag][2] = list.get(i).getBr_date();
+                brdata[flag++][3] = list.get(i).getRe_date();
+            }
+        }
+        DefaultTableModel tableModelReturnBooks = new DefaultTableModel(brdata, brhead);
+        ReturnBooktable.setModel(tableModelReturnBooks);
+        brdata = null;
     }
 
     private void initComponents(final String uid) {
@@ -337,6 +371,7 @@ public class UserMainForm extends JFrame {
         ReturnBookscrollPane = new JScrollPane();
         ReturnBooktable = new JTable();
         returnBookReturnbutton = new JButton();
+        ReturnBookSeeHistorybutton = new JButton();
         Main = new JPanel();
         Mainlabel = new JLabel();
 
@@ -403,7 +438,7 @@ public class UserMainForm extends JFrame {
                 menuItemSeeInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemSeeInformationActionPerformed(e,uid);
+                        menuItemSeeInformationActionPerformed(e, uid);
                     }
                 });
                 menu2.add(menuItemSeeInformation);
@@ -413,7 +448,7 @@ public class UserMainForm extends JFrame {
                 menuItemModifyInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemModifyInformationActionPerformed(e,uid);
+                        menuItemModifyInformationActionPerformed(e, uid);
                     }
                 });
                 menu2.add(menuItemModifyInformation);
@@ -579,21 +614,6 @@ public class UserMainForm extends JFrame {
                     SeeBookCurrentPagespinnerStateChanged(e);
                 }
             });
-            SeeBookCurrentPagespinner.addAncestorListener(new AncestorListener() {
-                @Override
-                public void ancestorAdded(AncestorEvent e) {
-                    SeeBookCurrentPagespinnerAncestorAdded(e);
-                }
-
-                @Override
-                public void ancestorMoved(AncestorEvent e) {
-                    SeeBookCurrentPagespinnerAncestorMoved(e);
-                }
-
-                @Override
-                public void ancestorRemoved(AncestorEvent e) {
-                }
-            });
             SeeBooks.add(SeeBookCurrentPagespinner);
             SeeBookCurrentPagespinner.setBounds(485, 10, 55, SeeBookCurrentPagespinner.getPreferredSize().height);
 
@@ -664,7 +684,7 @@ public class UserMainForm extends JFrame {
             BorrowBookBorrowButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    BorrowBookBorrowButtonActionPerformed(e,uid);
+                    BorrowBookBorrowButtonActionPerformed(e, uid);
                 }
             });
             BorrowBooks.add(BorrowBookBorrowButton);
@@ -694,11 +714,22 @@ public class UserMainForm extends JFrame {
             returnBookReturnbutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    returnBookReturnbuttonActionPerformed(e,uid);
+                    returnBookReturnbuttonActionPerformed(e);
                 }
             });
             ReturnBooks.add(returnBookReturnbutton);
-            returnBookReturnbutton.setBounds(new Rectangle(new Point(260, 255), returnBookReturnbutton.getPreferredSize()));
+            returnBookReturnbutton.setBounds(new Rectangle(new Point(350, 255), returnBookReturnbutton.getPreferredSize()));
+
+            //---- ReturnBookSeeHistorybutton ----
+            ReturnBookSeeHistorybutton.setText("查看历史记录");
+            ReturnBookSeeHistorybutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ReturnBookSeeHistorybuttonActionPerformed(e, uid);
+                }
+            });
+            ReturnBooks.add(ReturnBookSeeHistorybutton);
+            ReturnBookSeeHistorybutton.setBounds(new Rectangle(new Point(150, 255), ReturnBookSeeHistorybutton.getPreferredSize()));
         }
         contentPane.add(ReturnBooks);
         ReturnBooks.setBounds(35, 25, 670, 450);
@@ -805,10 +836,11 @@ public class UserMainForm extends JFrame {
     private JScrollPane ReturnBookscrollPane;
     private JTable ReturnBooktable;
     private JButton returnBookReturnbutton;
+    private JButton ReturnBookSeeHistorybutton;
     private JPanel Main;
     private JLabel Mainlabel;
     private Object[][] brdata = null;
-    private String brhead[] = {"图书编号", "图书名称", "借书时间", "还书时间"};
+    private String brhead[] = {"借书编号", "图书名称", "借书时间", "还书时间"};
     private Object[][] bdata = null;
     private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社", "数量", "描述"};
     private int currentPage = 1;
