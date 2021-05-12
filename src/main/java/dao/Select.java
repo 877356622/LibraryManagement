@@ -780,4 +780,74 @@ public class Select {
         }
         return borrows;
     }
+
+    public static List<String> serchBk_name(String bk_id[]){
+        List<String> list=new ArrayList<String>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM bookcategory WHERE bk_id=?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            for(int i=0;i<bk_id.length;i++) {
+                pstmt.setString(1, bk_id[i]);
+                rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    list.add(rs.getString("bk_name"));
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public static List<String> serchB_name(String b_id[]){
+        List<String> list=new ArrayList<String>();
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "SELECT * FROM books WHERE b_id=?";
+        ResultSet rs = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            for(int i=0;i<b_id.length;i++) {
+                pstmt.setString(1, b_id[i]);
+                rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    list.add(rs.getString("b_name"));
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 }

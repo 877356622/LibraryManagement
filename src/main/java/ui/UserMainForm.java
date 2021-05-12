@@ -160,11 +160,16 @@ public class UserMainForm extends JFrame {
                 bdata[i][7] = list.get(i).getB_desc();
             }
         } else {
+            String bk_id[]=new String[list.size()];
+            for(int i=0;i<list.size();i++){
+                bk_id[i]=list.get(i).getBk_id();
+            }
+            List<String> bk_nameList=Select.serchBk_name(bk_id);
             bdata = new Object[list.size()][bhead.length];
             for (int i = 0; i < list.size(); i++) {
                 bdata[i][0] = list.get(i).getB_id();
                 bdata[i][1] = list.get(i).getB_name();
-                bdata[i][2] = Select.serchbkname(list.get(i).getB_id());
+                bdata[i][2] = bk_nameList.get(i);
                 bdata[i][3] = list.get(i).getB_author();
                 bdata[i][4] = list.get(i).getB_price();
                 bdata[i][5] = list.get(i).getB_edit();
@@ -235,11 +240,16 @@ public class UserMainForm extends JFrame {
                 bdata[i][7] = list.get(i).getB_desc();
             }
         } else {
+            String bk_id[]=new String[list.size()];
+            for(int i=0;i<list.size();i++){
+                bk_id[i]=list.get(i).getBk_id();
+            }
+            List<String> bk_nameList=Select.serchBk_name(bk_id);
             bdata = new Object[list.size()][bhead.length];
             for (int i = 0; i < list.size(); i++) {
                 bdata[i][0] = list.get(i).getB_id();
                 bdata[i][1] = list.get(i).getB_name();
-                bdata[i][2] = Select.serchbkname(list.get(i).getB_id());
+                bdata[i][2] = bk_nameList.get(i);
                 bdata[i][3] = list.get(i).getB_author();
                 bdata[i][4] = list.get(i).getB_price();
                 bdata[i][5] = list.get(i).getB_edit();
@@ -290,10 +300,19 @@ public class UserMainForm extends JFrame {
         }
         brdata = new Object[j][brhead.length];
         int flag = 0;
+        String b_id[]=new String[j];
+        int m=0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getRe_date() == null) {
+                b_id[m++]=list.get(i).getB_id();
+            }
+        }
+        m=0;
+        List<String> bnameList=Select.serchB_name(b_id);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getRe_date() == null) {
                 brdata[flag][0] = list.get(i).getBr_id();
-                brdata[flag][1] = Select.getBooks(list.get(i).getB_id()).getB_name();
+                brdata[flag][1] = bnameList.get(m++);
                 brdata[flag][2] = list.get(i).getBr_date();
                 brdata[flag++][3] = list.get(i).getRe_date();
             }
@@ -336,10 +355,19 @@ public class UserMainForm extends JFrame {
         }
         brdata = new Object[j][brhead.length];
         int flag = 0;
+        String b_id[]=new String[j];
+        int m=0;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getRe_date() != null) {
+                b_id[m++]=list.get(i).getB_id();
+            }
+        }
+        m=0;
+        List<String> bnameList=Select.serchB_name(b_id);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getRe_date() != null) {
                 brdata[flag][0] = list.get(i).getBr_id();
-                brdata[flag][1] = Select.getBooks(list.get(i).getB_id()).getB_name();
+                brdata[flag][1] = bnameList.get(m++);
                 brdata[flag][2] = list.get(i).getBr_date();
                 brdata[flag++][3] = list.get(i).getRe_date();
             }
@@ -848,8 +876,5 @@ public class UserMainForm extends JFrame {
     private String brhead[] = {"借书编号", "图书名称", "借书时间", "还书时间"};
     private Object[][] bdata = null;
     private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社", "数量", "描述"};
-    private int currentPage = 1;
-    private int rowsPerPage = 10;
-    private int totalPage;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

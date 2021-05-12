@@ -137,18 +137,23 @@ public class AdmsMainForm extends JFrame {
         panel4.setVisible(true);
         List<Bookcategory> list = new ArrayList<Bookcategory>();
         list = Select.serchbookcategorys();
-        comboBox1.addItem("-请选择-");
+        comboBox2.addItem("-请选择-");
         for (int i = 0; i < list.size(); i++) {
             String bk_name = list.get(i).getBk_name();
             comboBox2.addItem(bk_name);
         }
         List<Books> booksList=new ArrayList<Books>();
         booksList=Select.serchBooks();
+        String bk_id[]=new String[list.size()];
+        for(int i=0;i<list.size();i++){
+            bk_id[i]=list.get(i).getBk_id();
+        }
+        List<String> bk_nameList=Select.serchBk_name(bk_id);
         bdata = new Object[booksList.size()][bhead.length];
         for(int i=0;i<booksList.size();i++){
             bdata[i][0]=booksList.get(i).getB_id();
             bdata[i][1]=booksList.get(i).getB_name();
-            bdata[i][2]=booksList.get(i).getB_name();
+            bdata[i][2]=bk_nameList.get(i);
             bdata[i][3]=booksList.get(i).getB_author();
             bdata[i][4]=booksList.get(i).getB_price();
             bdata[i][5]=booksList.get(i).getB_edit();
@@ -294,32 +299,60 @@ public class AdmsMainForm extends JFrame {
     private void button11ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书管理查找
-        String b_name=textField17.getText();
-        String b_author=textField18.getText();
-        String bk_id="";
+        String b_name = textField17.getText();
+        String b_author = textField18.getText();
+        String bk_name = (String) comboBox2.getSelectedItem();
         List<Books> list = new ArrayList<Books>();
-        if(b_name.isEmpty()&&b_author.isEmpty()){
-            //
-            bk_id=Select.serchbk_id(comboBox2.getSelectedItem());
-            list=Select.serchBooksForBkid(bk_id);
-        }else if(!b_name.isEmpty()&&b_author.isEmpty()){
-            list=Select.serchBooksForName(b_name);
-
-        }else if(b_name.isEmpty()&&!b_author.isEmpty()){
-            list=Select.serchBooksForauthor(b_author);
-        }else{
-            list=Select.serchBooksForNameAndAuthor(b_name,b_author);
+        if (b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooks();
+        } else if (!b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooksForName(b_name);
+        } else if (b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooksForauthor(b_author);
+        } else if (b_name.isEmpty() && b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForBkid(bk_id);
+        } else if (!b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
+            list = Select.serchBooksForNameAndAuthor(b_name, b_author);
+        } else if (!b_name.isEmpty() && b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForNameAndBkid(b_name, bk_id);
+        } else if (b_name.isEmpty() && !b_author.isEmpty() && !bk_name.equals("-请选择-")) {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooksForAuthorAndBkid(b_author, bk_id);
+        } else {
+            String bk_id = Select.serchbk_id(bk_name);
+            list = Select.serchBooks(b_name, b_author, bk_id);
         }
-        bdata = new Object[list.size()][bhead.length];
-        for(int i=0;i<list.size();i++){
-            bdata[i][0]=list.get(i).getB_id();
-            bdata[i][1]=list.get(i).getB_name();
-            bdata[i][2]=list.get(i).getB_name();
-            bdata[i][3]=list.get(i).getB_author();
-            bdata[i][4]=list.get(i).getB_price();
-            bdata[i][5]=list.get(i).getB_edit();
-            bdata[i][6]=list.get(i).getB_number();
-            bdata[i][7]=list.get(i).getB_desc();
+        if (!bk_name.equals("-请选择-")) {
+            bdata = new Object[list.size()][bhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bdata[i][0] = list.get(i).getB_id();
+                bdata[i][1] = list.get(i).getB_name();
+                bdata[i][2] = bk_name;
+                bdata[i][3] = list.get(i).getB_author();
+                bdata[i][4] = list.get(i).getB_price();
+                bdata[i][5] = list.get(i).getB_edit();
+                bdata[i][6] = list.get(i).getB_number();
+                bdata[i][7] = list.get(i).getB_desc();
+            }
+        } else {
+            String bk_id[]=new String[list.size()];
+            for(int i=0;i<list.size();i++){
+                bk_id[i]=list.get(i).getBk_id();
+            }
+            List<String> bk_nameList=Select.serchBk_name(bk_id);
+            bdata = new Object[list.size()][bhead.length];
+            for (int i = 0; i < list.size(); i++) {
+                bdata[i][0] = list.get(i).getB_id();
+                bdata[i][1] = list.get(i).getB_name();
+                bdata[i][2] = bk_nameList.get(i);
+                bdata[i][3] = list.get(i).getB_author();
+                bdata[i][4] = list.get(i).getB_price();
+                bdata[i][5] = list.get(i).getB_edit();
+                bdata[i][6] = list.get(i).getB_number();
+                bdata[i][7] = list.get(i).getB_desc();
+            }
         }
         DefaultTableModel tableModel2 = new DefaultTableModel(bdata, bhead);
         table2.setModel(tableModel2);
@@ -781,7 +814,7 @@ public class AdmsMainForm extends JFrame {
             //---- label2 ----
             label2.setText("\u56fe\u4e66\u7c7b\u522b\u63cf\u8ff0:");
             panel1.add(label2);
-            label2.setBounds(5, 145, 80, 30);
+            label2.setBounds(10, 145, 95, 30);
             panel1.add(textField1);
             textField1.setBounds(115, 20, 215, textField1.getPreferredSize().height);
             panel1.add(textField2);
