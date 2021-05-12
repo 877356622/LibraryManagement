@@ -115,6 +115,7 @@ public class admsMainForm extends JFrame {
         panel3.setVisible(true);
         List<Bookcategory> list = new ArrayList<Bookcategory>();
         list = Select.serchbookcategorys();
+        comboBox1.addItem("-请选择-");
         for (int i = 0; i < list.size(); i++) {
             String bk_name = list.get(i).getBk_name();
             comboBox1.addItem(bk_name);
@@ -136,6 +137,7 @@ public class admsMainForm extends JFrame {
         panel4.setVisible(true);
         List<Bookcategory> list = new ArrayList<Bookcategory>();
         list = Select.serchbookcategorys();
+        comboBox1.addItem("-请选择-");
         for (int i = 0; i < list.size(); i++) {
             String bk_name = list.get(i).getBk_name();
             comboBox2.addItem(bk_name);

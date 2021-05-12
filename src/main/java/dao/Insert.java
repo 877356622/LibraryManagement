@@ -1,8 +1,11 @@
 package dao;
 
 import entity.Books;
+import entity.Borrows;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Insert {
     public static boolean registeradmin(String a_id, String a_name, String a_password) {
@@ -131,6 +134,42 @@ public class Insert {
                 pstmt.close();
                 conn.close();
                 return flag;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    public static boolean InsertBorrows (Borrows borrows) {
+        boolean flag=true;
+        Connection conn = null;
+        String url = "jdbc:oracle:thin:@8.129.212.155:1521:orcl";
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO borrows VALUES(?,?,?,?,?)";
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, "lhh", "lhh1234");
+            System.out.println("连接: " + conn);
+            pstmt = conn.prepareStatement(sql);
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = sdf.format(new Date());
+            String nowDate=date.valueOf(date);
+            pstmt.setString(1,borrows.getBr_id());
+            pstmt.setString(2,borrows.getB_id());
+            pstmt.setString(3,borrows.getU_id());
+            pstmt.setTimestamp(4, Timestamp.valueOf(nowDate));
+            pstmt.setNull(5,java.sql.Types.NULL);
+            pstmt.execute();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            flag=false;
+        } finally {
+            try {
+                pstmt.close();
+                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -6,7 +6,9 @@ package ui;
 
 import dao.Select;
 import dao.Update;
+import entity.Bookcategory;
 import entity.Books;
+import entity.Borrows;
 import entity.Users;
 
 import java.awt.*;
@@ -41,7 +43,7 @@ public class userMainForm extends JFrame {
         ReturnBooks.setVisible(false);
     }
 
-    private void menuItemSeeInformationActionPerformed(ActionEvent e,String uid) {
+    private void menuItemSeeInformationActionPerformed(ActionEvent e, String uid) {
         // TODO add your code here
         Main.setVisible(false);
         SystemInfirmation.setVisible(false);
@@ -50,12 +52,12 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(false);
-        Users users=Select.serchuser(uid);
+        Users users = Select.serchuser(uid);
         SeeIdText.setText(users.getU_id());
         SeeNameText.setText(users.getU_name());
     }
 
-    private void menuItemModifyInformationActionPerformed(ActionEvent e,String uid) {
+    private void menuItemModifyInformationActionPerformed(ActionEvent e, String uid) {
         // TODO add your code here
         Main.setVisible(false);
         SystemInfirmation.setVisible(false);
@@ -64,16 +66,16 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(false);
-        Users users=Select.serchuser(uid);
+        Users users = Select.serchuser(uid);
         ModifyIdText.setText(users.getU_id());
         ModifyNameText.setText(users.getU_name());
     }
 
     private void ModifymodifyButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
-        String uid=ModifyIdText.getText();
-        String uname=ModifyNameText.getText();
-        String upassword= String.valueOf(ModifyPasswordText.getPassword());
+        String uid = ModifyIdText.getText();
+        String uname = ModifyNameText.getText();
+        String upassword = String.valueOf(ModifyPasswordText.getPassword());
         if (uid.isEmpty()) {
             JOptionPane.showMessageDialog(null, "用户id不能为空");
             return;
@@ -86,11 +88,11 @@ public class userMainForm extends JFrame {
             JOptionPane.showMessageDialog(null, "密码不能为空");
             return;
         }
-        if(Update.updateUsers(uid,uname,upassword)){
-            JOptionPane.showMessageDialog(null,"修改成功");
+        if (Update.updateUsers(uid, uname, upassword)) {
+            JOptionPane.showMessageDialog(null, "修改成功");
             initComponents(uid);
-        }else{
-            JOptionPane.showMessageDialog(null,"修改失败");
+        } else {
+            JOptionPane.showMessageDialog(null, "修改失败");
         }
     }
 
@@ -103,36 +105,43 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(true);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(false);
+        List<Bookcategory> list = new ArrayList<Bookcategory>();
+        list = Select.serchbookcategorys();
+        SeeBookBkNamecomboBox.addItem("-请选择-");
+        for (int i = 0; i < list.size(); i++) {
+            String bk_name = list.get(i).getBk_name();
+            SeeBookBkNamecomboBox.addItem(bk_name);
+        }
     }
 
     private void SeeBookSeeButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
-        String b_name=SeeBookNameText.getText();
-        String b_author=SeeBookAothorText.getText();
-        String bk_id="";
+        String b_name = SeeBookNameText.getText();
+        String b_author = SeeBookAothorText.getText();
+        String bk_id = "";
         List<Books> list = new ArrayList<Books>();
-        if(b_name.isEmpty()&&b_author.isEmpty()){
+        if (b_name.isEmpty() && b_author.isEmpty()) {
             //
-            bk_id=Select.serchbk_id(SeeBookBkNamecomboBox.getSelectedItem());
-            list=Select.serchBooksForBkid(bk_id);
-        }else if(!b_name.isEmpty()&&b_author.isEmpty()){
-            list=Select.serchBooksForName(b_name);
+            bk_id = Select.serchbk_id(SeeBookBkNamecomboBox.getSelectedItem());
+            list = Select.serchBooksForBkid(bk_id);
+        } else if (!b_name.isEmpty() && b_author.isEmpty()) {
+            list = Select.serchBooksForName(b_name);
 
-        }else if(b_name.isEmpty()&&!b_author.isEmpty()){
-            list=Select.serchBooksForauthor(b_author);
-        }else{
-            list=Select.serchBooks(b_name,b_author);
+        } else if (b_name.isEmpty() && !b_author.isEmpty()) {
+            list = Select.serchBooksForauthor(b_author);
+        } else {
+            list = Select.serchBooks(b_name, b_author);
         }
         bdata = new Object[list.size()][bhead.length];
-        for(int i=0;i<list.size();i++){
-            bdata[i][0]=list.get(i).getB_id();
-            bdata[i][1]=list.get(i).getB_name();
-            bdata[i][2]=list.get(i).getB_name();
-            bdata[i][3]=list.get(i).getB_author();
-            bdata[i][4]=list.get(i).getB_price();
-            bdata[i][5]=list.get(i).getB_edit();
-            bdata[i][6]=list.get(i).getB_number();
-            bdata[i][7]=list.get(i).getB_desc();
+        for (int i = 0; i < list.size(); i++) {
+            bdata[i][0] = list.get(i).getB_id();
+            bdata[i][1] = list.get(i).getB_name();
+            bdata[i][2] = list.get(i).getB_name();
+            bdata[i][3] = list.get(i).getB_author();
+            bdata[i][4] = list.get(i).getB_price();
+            bdata[i][5] = list.get(i).getB_edit();
+            bdata[i][6] = list.get(i).getB_number();
+            bdata[i][7] = list.get(i).getB_desc();
         }
         DefaultTableModel tableModelSeeBooks = new DefaultTableModel(bdata, bhead);
         tableSeeBooks.setModel(tableModelSeeBooks);
@@ -164,17 +173,54 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(true);
         ReturnBooks.setVisible(false);
+        List<Bookcategory> list = new ArrayList<Bookcategory>();
+        list = Select.serchbookcategorys();
+        BorrowBookBkNamecomboBox.addItem("-请选择-");
+        for (int i = 0; i < list.size(); i++) {
+            String bk_name = list.get(i).getBk_name();
+            BorrowBookBkNamecomboBox.addItem(bk_name);
+        }
     }
 
     private void BorrowBookSeeButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
+        String b_name = BorrowBookNameText.getText();
+        String b_author = BorrowBookAothorText.getText();
+        String bk_id = "";
+        List<Books> list = new ArrayList<Books>();
+        if (b_name.isEmpty() && b_author.isEmpty()) {
+            //
+            bk_id = Select.serchbk_id(BorrowBookBkNamecomboBox.getSelectedItem());
+            list = Select.serchBooksForBkid(bk_id);
+        } else if (!b_name.isEmpty() && b_author.isEmpty()) {
+            list = Select.serchBooksForName(b_name);
+
+        } else if (b_name.isEmpty() && !b_author.isEmpty()) {
+            list = Select.serchBooksForauthor(b_author);
+        } else {
+            list = Select.serchBooks(b_name, b_author);
+        }
+        bdata = new Object[list.size()][bhead.length];
+        for (int i = 0; i < list.size(); i++) {
+            bdata[i][0] = list.get(i).getB_id();
+            bdata[i][1] = list.get(i).getB_name();
+            bdata[i][2] = list.get(i).getB_name();
+            bdata[i][3] = list.get(i).getB_author();
+            bdata[i][4] = list.get(i).getB_price();
+            bdata[i][5] = list.get(i).getB_edit();
+            bdata[i][6] = list.get(i).getB_number();
+            bdata[i][7] = list.get(i).getB_desc();
+        }
+        DefaultTableModel tableModelBorrowBooks = new DefaultTableModel(bdata, bhead);
+        BorrowBooktable.setModel(tableModelBorrowBooks);
+        bdata = null;
     }
 
     private void BorrowBookBorrowButtonActionPerformed(ActionEvent e) {
         // TODO add your code here
     }
 
-    private void menuItemReturnBookActionPerformed(ActionEvent e) {
+    private void menuItemReturnBookActionPerformed(ActionEvent e, String uid) {
         // TODO add your code here
         Main.setVisible(false);
         SystemInfirmation.setVisible(false);
@@ -183,22 +229,40 @@ public class userMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(true);
+        List<Borrows> list = Select.serchBoroows(uid);
+        brdata = new Object[list.size()][brhead.length];
+        for (int i = 0; i < list.size(); i++) {
+            brdata[i][0] = list.get(i).getBr_id();
+            brdata[i][1] = Select.getBooks(list.get(i).getB_id()).getB_name();
+            brdata[i][2] = list.get(i).getBr_date();
+            brdata[i][3] = list.get(i).getRe_date();
+        }
+        DefaultTableModel tableModelReturnBooks = new DefaultTableModel(brdata, brhead);
+        ReturnBooktable.setModel(tableModelReturnBooks);
+        brdata = null;
+
     }
 
-    private void returnBookReturnbuttonActionPerformed(ActionEvent e) {
+    private void returnBookReturnbuttonActionPerformed(ActionEvent e,String uid) {
         // TODO add your code here
-    }
-
-    private void menuItemSeeInformationActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void menuItemModifyInformationActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        String br_id;
+        int count = ReturnBooktable.getSelectedRow();//获取你选中的行号（记录）
+        br_id = ReturnBooktable.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
+        String re_time =ReturnBooktable.getValueAt(count,3).toString();
+        if(re_time.isEmpty()) {
+            if (Update.updateBorrows(br_id)) {
+                JOptionPane.showMessageDialog(null, "还书成功");
+                initComponents(uid);
+            } else {
+                JOptionPane.showMessageDialog(null, "还书失败");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"书本已归还");
+        }
     }
 
     private void initComponents(final String uid) {
-        setTitle("欢迎 "+ Select.serchuser(uid).getU_name()+" 使用本图书管理系统");
+        setTitle("欢迎 " + Select.serchuser(uid).getU_name() + " 使用本图书管理系统");
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
         menu1 = new JMenu();
@@ -298,7 +362,7 @@ public class userMainForm extends JFrame {
                 menuItemReturnBook.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemReturnBookActionPerformed(e);
+                        menuItemReturnBookActionPerformed(e, uid);
                     }
                 });
                 menu1.add(menuItemReturnBook);
@@ -325,7 +389,7 @@ public class userMainForm extends JFrame {
                 menuItemSeeInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemSeeInformationActionPerformed(e);
+                        menuItemSeeInformationActionPerformed(e,uid);
                     }
                 });
                 menu2.add(menuItemSeeInformation);
@@ -335,7 +399,7 @@ public class userMainForm extends JFrame {
                 menuItemModifyInformation.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        menuItemModifyInformationActionPerformed(e);
+                        menuItemModifyInformationActionPerformed(e,uid);
                     }
                 });
                 menu2.add(menuItemModifyInformation);
@@ -506,12 +570,15 @@ public class userMainForm extends JFrame {
                 public void ancestorAdded(AncestorEvent e) {
                     SeeBookCurrentPagespinnerAncestorAdded(e);
                 }
+
                 @Override
                 public void ancestorMoved(AncestorEvent e) {
                     SeeBookCurrentPagespinnerAncestorMoved(e);
                 }
+
                 @Override
-                public void ancestorRemoved(AncestorEvent e) {}
+                public void ancestorRemoved(AncestorEvent e) {
+                }
             });
             SeeBooks.add(SeeBookCurrentPagespinner);
             SeeBookCurrentPagespinner.setBounds(485, 10, 55, SeeBookCurrentPagespinner.getPreferredSize().height);
@@ -569,7 +636,7 @@ public class userMainForm extends JFrame {
             //---- BorrowBookNamelabel ----
             BorrowBookNamelabel.setText("\u56fe\u4e66\u540d\u5b57\uff1a");
             BorrowBooks.add(BorrowBookNamelabel);
-            BorrowBookNamelabel.setBounds(5, 50, 60, 15);
+            BorrowBookNamelabel.setBounds(5, 50, 70, 15);
 
             //======== BorrowBookscrollPane ========
             {
@@ -613,7 +680,7 @@ public class userMainForm extends JFrame {
             returnBookReturnbutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    returnBookReturnbuttonActionPerformed(e);
+                    returnBookReturnbuttonActionPerformed(e,uid);
                 }
             });
             ReturnBooks.add(returnBookReturnbutton);
@@ -629,7 +696,7 @@ public class userMainForm extends JFrame {
             {
                 // compute preferred size
                 Dimension preferredSize = new Dimension();
-                for(int i = 0; i < Main.getComponentCount(); i++) {
+                for (int i = 0; i < Main.getComponentCount(); i++) {
                     Rectangle bounds = Main.getComponent(i).getBounds();
                     preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                     preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -727,9 +794,9 @@ public class userMainForm extends JFrame {
     private JPanel Main;
     private JLabel Mainlabel;
     private Object[][] brdata = null;
-    private String brhead[] = {"图书编号", "图书名称", "借书时间","还书时间"};
+    private String brhead[] = {"图书编号", "图书名称", "借书时间", "还书时间"};
     private Object[][] bdata = null;
-    private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社","数量", "描述"};
+    private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社", "数量", "描述"};
     private int currentPage = 1;
     private int rowsPerPage = 10;
     private int totalPage;
