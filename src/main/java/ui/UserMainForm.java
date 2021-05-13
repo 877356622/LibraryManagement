@@ -128,6 +128,8 @@ public class UserMainForm extends JFrame {
         List<Books> list = new ArrayList<Books>();
         if (b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
             list = Select.serchBooks();
+            totalPage = list.size() % rowsPage == 0 ? list.size() / rowsPage : list.size() / rowsPage + 1;
+            SeeBooktotalPageText.setText(String.valueOf(totalPage));
         } else if (!b_name.isEmpty() && b_author.isEmpty() && bk_name.equals("-请选择-")) {
             list = Select.serchBooksForName(b_name);
         } else if (b_name.isEmpty() && !b_author.isEmpty() && bk_name.equals("-请选择-")) {
@@ -180,6 +182,16 @@ public class UserMainForm extends JFrame {
         DefaultTableModel tableModelSeeBooks = new DefaultTableModel(bdata, bhead);
         tableSeeBooks.setModel(tableModelSeeBooks);
         bdata = null;
+        currentPage=firthPage;
+        SeeBookCurrentPagespinner.setValue(currentPage);
+    }
+
+    private void SeeBookJumpButtonActionPerformed(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void SeeBookCurrentPagespinnerStateChanged(ChangeEvent e) {
+        // TODO add your code here
     }
 
     private void menuItemBorrowBookActionPerformed(ActionEvent e) {
@@ -418,6 +430,10 @@ public class UserMainForm extends JFrame {
         SeeBookBkNamecomboBox = new JComboBox();
         SeeBookBkNamelabel = new JLabel();
         SeeBookSeeButton = new JButton();
+        SeeBooktotalPagelabel = new JLabel();
+        SeeBooktotalPageText = new JTextField();
+        SeeBookCurrentPagespinner = new JSpinner();
+        SeeBookJumpButton = new JButton();
         BorrowBooks = new JPanel();
         BorrowBooklabel = new JLabel();
         BorrowBookSeeButton = new JButton();
@@ -664,6 +680,33 @@ public class UserMainForm extends JFrame {
             SeeBooks.add(SeeBookSeeButton);
             SeeBookSeeButton.setBounds(new Rectangle(new Point(560, 380), SeeBookSeeButton.getPreferredSize()));
 
+            //---- SeeBooktotalPagelabel ----
+            SeeBooktotalPagelabel.setText("\u603b\u9875\u6570\uff1a");
+            SeeBooks.add(SeeBooktotalPagelabel);
+            SeeBooktotalPagelabel.setBounds(new Rectangle(new Point(350, 10), SeeBooktotalPagelabel.getPreferredSize()));
+            SeeBooks.add(SeeBooktotalPageText);
+            SeeBooktotalPageText.setBounds(410, 10, 40, SeeBooktotalPageText.getPreferredSize().height);
+
+            //---- SeeBookCurrentPagespinner ----
+            SeeBookCurrentPagespinner.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    SeeBookCurrentPagespinnerStateChanged(e);
+                }
+            });
+            SeeBooks.add(SeeBookCurrentPagespinner);
+            SeeBookCurrentPagespinner.setBounds(485, 10, 55, SeeBookCurrentPagespinner.getPreferredSize().height);
+
+            //---- SeeBookJumpButton ----
+            SeeBookJumpButton.setText("\u8df3\u8f6c");
+            SeeBookJumpButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SeeBookJumpButtonActionPerformed(e);
+                }
+            });
+            SeeBooks.add(SeeBookJumpButton);
+            SeeBookJumpButton.setBounds(new Rectangle(new Point(560, 10), SeeBookJumpButton.getPreferredSize()));
         }
         contentPane.add(SeeBooks);
         SeeBooks.setBounds(30, 25, 670, 450);
@@ -852,6 +895,10 @@ public class UserMainForm extends JFrame {
     private JComboBox SeeBookBkNamecomboBox;
     private JLabel SeeBookBkNamelabel;
     private JButton SeeBookSeeButton;
+    private JLabel SeeBooktotalPagelabel;
+    private JTextField SeeBooktotalPageText;
+    private JSpinner SeeBookCurrentPagespinner;
+    private JButton SeeBookJumpButton;
     private JPanel BorrowBooks;
     private JLabel BorrowBooklabel;
     private JButton BorrowBookSeeButton;
@@ -876,5 +923,9 @@ public class UserMainForm extends JFrame {
     private String brhead[] = {"借书编号", "图书名称", "借书时间", "还书时间"};
     private Object[][] bdata = null;
     private String bhead[] = {"图书编号", "图书名称", "图书类别名称", "图书作者", "价格", "出版社", "数量", "描述"};
+    private int firthPage=1;
+    private int currentPage=1;
+    private int rowsPage=10;
+    private int totalPage;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
