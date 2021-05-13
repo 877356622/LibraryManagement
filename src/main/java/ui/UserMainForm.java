@@ -92,7 +92,6 @@ public class UserMainForm extends JFrame {
         }
         if (Update.updateUsers(uid, uname, upassword)) {
             JOptionPane.showMessageDialog(null, "修改成功");
-            initComponents(uid);
         } else {
             JOptionPane.showMessageDialog(null, "修改失败");
         }
