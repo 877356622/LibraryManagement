@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Select {
 
+    public static int totalPage;
+
     public static List<Books> serchBooks() {
         List<Books> list = new ArrayList<Books>();
         Connection conn = null;
@@ -75,6 +77,16 @@ public class Select {
                 book.setB_edit(rs.getString("b_edit"));
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
+            }
+            if(currentPage==1) {
+                sql = "SELECT COUNT(*) FROM books";
+                pstmt = conn.prepareStatement(sql);
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -162,6 +174,17 @@ public class Select {
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
             }
+            if(currentPage==1) {
+                sql = "SELECT COUNT(*) FROM books WHERE b_name LIKE ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,"%"+b_name+"%");
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -248,6 +271,17 @@ public class Select {
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
             }
+            if(currentPage==1) {
+                sql = "SELECT COUNT(*) FROM books WHERE b_author LIKE ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,"%"+b_author+"%");
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -333,6 +367,17 @@ public class Select {
                 book.setB_edit(rs.getString("b_edit"));
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
+            }
+            if(currentPage==1) {
+                sql = "SELECT count(*) FROM books WHERE bk_id = ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,bk_id);
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -422,6 +467,18 @@ public class Select {
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
             }
+            if(currentPage==1) {
+                sql = "SELECT count(*) FROM books WHERE b_name LIKE ? AND b_author LIKE ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,"%"+b_name+"%");
+                pstmt.setString(2,"%"+b_author+"%");
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -510,6 +567,18 @@ public class Select {
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
             }
+            if(currentPage==1) {
+                sql = "SELECT COUNT(*) FROM books WHERE b_name LIKE ? AND bk_id=?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,"%"+b_name+"%");
+                pstmt.setString(2,bk_id);
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -597,6 +666,18 @@ public class Select {
                 book.setB_edit(rs.getString("b_edit"));
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
+            }
+            if(currentPage==1) {
+                sql = "SELECT COUNT(*) FROM books WHERE b_author LIKE ? AND bk_id=?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,"%"+b_author+"%");
+                pstmt.setString(2,bk_id);
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -687,6 +768,19 @@ public class Select {
                 book.setB_edit(rs.getString("b_edit"));
                 book.setB_number(rs.getInt("b_number"));
                 list.add(book);
+            }
+            if(currentPage==1) {
+                sql = "SELECT COUNT(*) FROM books WHERE b_name LIKE ? AND b_author LIKE ? AND bk_id=?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1,"%"+b_name+"%");
+                pstmt.setString(2,"%"+b_author+"%");
+                pstmt.setString(3,bk_id);
+                rs = pstmt.executeQuery();
+                int totalRows = 0;
+                if (rs.next()) {
+                    totalRows = rs.getInt(1);
+                }
+                totalPage = totalRows % rowsPage == 0 ? totalRows / rowsPage : totalRows / rowsPage + 1;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

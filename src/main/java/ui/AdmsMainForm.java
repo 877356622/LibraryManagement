@@ -142,24 +142,8 @@ public class AdmsMainForm extends JFrame {
             String bk_name = list.get(i).getBk_name();
             comboBox2.addItem(bk_name);
         }
-        List<Books> booksList=new ArrayList<Books>();
-        booksList=Select.serchBooks();
-        String bk_id[]=new String[list.size()];
-        for(int i=0;i<list.size();i++){
-            bk_id[i]=list.get(i).getBk_id();
-        }
-        List<String> bk_nameList=Select.serchBk_name(bk_id);
-        bdata = new Object[booksList.size()][bhead.length];
-        for(int i=0;i<booksList.size();i++){
-            bdata[i][0]=booksList.get(i).getB_id();
-            bdata[i][1]=booksList.get(i).getB_name();
-            bdata[i][2]=bk_nameList.get(i);
-            bdata[i][3]=booksList.get(i).getB_author();
-            bdata[i][4]=booksList.get(i).getB_price();
-            bdata[i][5]=booksList.get(i).getB_edit();
-            bdata[i][6]=booksList.get(i).getB_number();
-            bdata[i][7]=booksList.get(i).getB_desc();
-        }
+
+        bdata = new Object[0][bhead.length];
         DefaultTableModel tableModel2 = new DefaultTableModel(bdata, bhead);
         table2.setModel(tableModel2);
         bdata = null;
