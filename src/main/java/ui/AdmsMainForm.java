@@ -638,7 +638,7 @@ public class AdmsMainForm extends JFrame {
         textField28 = new JTextField();
         textField29 = new JTextField();
         label30 = new JLabel();
-        textField30 = new JTextField();
+        textField30 = new JPasswordField();
         button14 = new JButton();
         button15 = new JButton();
         panel7 = new JPanel();
