@@ -402,7 +402,7 @@ public class UserMainForm extends JFrame {
         int count = ReturnBooktable.getSelectedRow();//获取你选中的行号（记录）
         br_id = ReturnBooktable.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
         Borrows borrows = Select.serchBoroowsForBrid(br_id);
-        if (borrows.getRe_date() != null) {
+        if (borrows.getRe_date() == null) {
             if (Update.updateBorrows(br_id)) {
                 if (Update.updateReBooks(borrows.getB_id())) {
                     JOptionPane.showMessageDialog(null, "还书成功");
