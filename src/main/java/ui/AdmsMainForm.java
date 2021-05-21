@@ -181,6 +181,7 @@ public class AdmsMainForm extends JFrame {
         panel8.setVisible(false);
         panel6.setVisible(true);
         Administrators administrators = Select.serchadms(aid);
+        oldA_id=aid;
         textField28.setText(administrators.getA_id());
         textField29.setText(administrators.getA_name());
     }
@@ -232,7 +233,7 @@ public class AdmsMainForm extends JFrame {
             JOptionPane.showMessageDialog(null, "密码不能为空");
             return;
         }
-        if (Update.updateAdms(a_id, a_name, a_password)) {
+        if (Update.updateAdms(a_id, a_name, a_password,oldA_id)) {
             JOptionPane.showMessageDialog(null, "修改信息成功");
         } else {
             JOptionPane.showMessageDialog(null, "修改信息失败");
@@ -261,7 +262,7 @@ public class AdmsMainForm extends JFrame {
         books.setB_edit(textField24.getText());
         books.setB_number(Integer.parseInt(textField12.getText()));
         books.setB_price(Double.valueOf(textField25.getText()));
-        if(Update.updateBooks(books)){
+        if(Update.updateBooks(books,oldB_id)){
             JOptionPane.showMessageDialog(null,"修改成功");
         }else {
             JOptionPane.showMessageDialog(null,"修改失败");
@@ -271,7 +272,13 @@ public class AdmsMainForm extends JFrame {
     private void button13ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书删除
-        String b_id=textField19.getText();
+        String b_id;
+        if(textField19.getText().isEmpty()){
+            int count=table2.getSelectedRow();
+            b_id=table2.getValueAt(count,0).toString();
+        }else {
+            b_id = textField19.getText();
+        }
         if(Delete.deletebook(b_id)){
             JOptionPane.showMessageDialog(null,"删除成功");
         }else {
@@ -344,18 +351,17 @@ public class AdmsMainForm extends JFrame {
 
     private void button16ActionPerformed(ActionEvent e){
         //图书管理获取
-        String getname;
-        if(textField19.getText().isEmpty()) {
-            int count = table2.getSelectedRow();//获取你选中的行号（记录）
-            getname = table2.getValueAt(count, 0).toString();//读取你获取行号的某一列的值（也就是字段）
-            textField19.setText(getname);
-        }
-        String b_id=textField19.getText();
-        Books books=Select.getBooks(b_id);
-        if(books.getBk_id().length()==0){
-            JOptionPane.showMessageDialog(null,"没有该图书");
-            return;
-        }
+        Books books=new Books();
+        int count = table2.getSelectedRow();//获取你选中的行号（记录）
+        books.setB_id(table2.getValueAt(count, 0).toString());//读取你获取行号的某一列的值（也就是字段）
+        books.setB_name(table2.getValueAt(count, 1).toString());
+        books.setB_price((Double.valueOf(table2.getValueAt(count, 4).toString())));
+        books.setB_author(table2.getValueAt(count, 3).toString());
+        books.setB_number(Integer.parseInt(table2.getValueAt(count, 6).toString()));
+        books.setB_desc(table2.getValueAt(count, 7).toString());
+        books.setB_edit(table2.getValueAt(count, 5).toString());
+        oldB_id=books.getB_id();
+        textField19.setText(books.getB_id());
         textField22.setText(books.getB_desc());
         textField12.setText(String.valueOf(books.getB_number()));
         textField20.setText(books.getB_name());
@@ -426,7 +432,13 @@ public class AdmsMainForm extends JFrame {
     private void button8ActionPerformed(ActionEvent e) {
         // TODO add your code here
         //图书类别删除按钮
-        String bk_id = textField6.getText();
+        String bk_id ;
+        if(textField6.getText().isEmpty()){
+            int count=table1.getSelectedRow();
+            bk_id=table1.getValueAt(count,0).toString();
+        } else {
+            bk_id=textField6.getText();
+        }
         if (Delete.deletebookcategory(bk_id)) {
             JOptionPane.showMessageDialog(null, "删除成功");
         } else {
@@ -440,7 +452,7 @@ public class AdmsMainForm extends JFrame {
         String bk_id = textField6.getText();
         String bk_name = textField7.getText();
         String bk_desc = textField8.getText();
-        if (Update.updateBookcategory(bk_id, bk_name, bk_desc)) {
+        if (Update.updateBookcategory(bk_id, bk_name, bk_desc,oldbk_id)) {
             JOptionPane.showMessageDialog(null, "修改成功");
         } else {
             JOptionPane.showMessageDialog(null, "修改失败");
@@ -464,6 +476,16 @@ public class AdmsMainForm extends JFrame {
         bkdata = null;
         spinner1.setValue(currentPage);
 
+    }
+    private void getBKButtonActionPerformed(ActionEvent e) {
+        //图书类别管理获取
+        int count=table1.getSelectedRow();
+        oldbk_id=table1.getValueAt(count,0).toString();
+        String bk_name=table1.getValueAt(count,1).toString();
+        String bk_desc=table1.getValueAt(count,2).toString();
+        textField6.setText(oldbk_id);
+        textField7.setText(bk_name);
+        textField8.setText(bk_desc);
     }
 
     private void button5ActionPerformed(ActionEvent e) {
@@ -647,6 +669,7 @@ public class AdmsMainForm extends JFrame {
         label33 = new JLabel();
         panel9 = new JPanel();
         label31 = new JLabel();
+        getBKButton=new JButton();
 
         //======== this ========
         setTitle("欢迎管理员 "+Select.serchadms(aid).getA_name()+" 使用本系统");
@@ -943,6 +966,17 @@ public class AdmsMainForm extends JFrame {
             label8.setText("\u56fe\u4e66\u7c7b\u522b\u63cf\u8ff0");
             panel2.add(label8);
             label8.setBounds(new Rectangle(new Point(425, 305), label8.getPreferredSize()));
+
+            //---- 获取 ----
+            getBKButton.setText("\u83b7\u53d6");
+            getBKButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    getBKButtonActionPerformed(e);
+                }
+            });
+            panel2.add(getBKButton);
+            getBKButton.setBounds(new Rectangle(new Point(425, 375), getBKButton.getPreferredSize()));
         }
         contentPane.add(panel2);
         panel2.setBounds(100, 25, 700, 550);
@@ -1157,6 +1191,7 @@ public class AdmsMainForm extends JFrame {
             });
             panel4.add(button16);
             button16.setBounds(new Rectangle(new Point(525, 370), button16.getPreferredSize()));
+
         }
         contentPane.add(panel4);
         panel4.setBounds(45, 25, 700, 550);
@@ -1283,6 +1318,7 @@ public class AdmsMainForm extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar menuBar1;
     private JMenu menu1;
@@ -1401,5 +1437,9 @@ public class AdmsMainForm extends JFrame {
     private int currentPage = 1;
     private int rowsPerPage = 10;
     private int totalPage;
+    private JButton getBKButton;
+    private String oldbk_id;
+    private String oldB_id;
+    private String oldA_id;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
