@@ -68,6 +68,7 @@ public class UserMainForm extends JFrame {
         SeeBooks.setVisible(false);
         BorrowBooks.setVisible(false);
         ReturnBooks.setVisible(false);
+        oldU_id=uid;
         Users users = Select.serchuser(uid);
         ModifyIdText.setText(users.getU_id());
         ModifyNameText.setText(users.getU_name());
@@ -90,7 +91,7 @@ public class UserMainForm extends JFrame {
             JOptionPane.showMessageDialog(null, "密码不能为空");
             return;
         }
-        if (Update.updateUsers(uid, uname, upassword)) {
+        if (Update.updateUsers(uid, uname, upassword,oldU_id)) {
             JOptionPane.showMessageDialog(null, "修改成功");
         } else {
             JOptionPane.showMessageDialog(null, "修改失败");
@@ -990,5 +991,6 @@ public class UserMainForm extends JFrame {
     private int currentPage=1;
     private int rowsPage=20;
     private int totalPage;
+    private String oldU_id;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

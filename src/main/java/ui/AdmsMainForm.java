@@ -382,6 +382,10 @@ public class AdmsMainForm extends JFrame {
         books.setB_desc(textField16.getText());
         books.setB_number(Integer.valueOf(textField3.getText()));
         books.setBk_id(Select.serchbk_id(comboBox1.getSelectedItem()));
+        if(comboBox1.getSelectedItem().equals("-请选择-")){
+            JOptionPane.showMessageDialog(null,"请选择图书类别");
+            return;
+        }
         if(books.getB_id().isEmpty()){
             JOptionPane.showMessageDialog(null,"图书编号不能为空");
             return;
